@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 
 interface AurFloatingCardProps {
@@ -31,19 +31,19 @@ export function AurFloatingCard({
     const [hasAnswered, setHasAnswered] = useState<boolean | null>(null);
     // Track if user has selected a helper (completed flow)
     const [helperChosen, setHelperChosen] = useState(false);
-    // Track if user has interacted (dismissed or selected) to prevent nagging
-    const [userInteracted, setUserInteracted] = useState(false);
+    // Track if user has interacted (dismissed or selected) to prevent nagging - use ref to persist
+    const userInteractedRef = useRef(false);
 
     // Reset when new AUR packages appear, BUT ONLY if user hasn't interacted yet
     useEffect(() => {
-        if (show && aurAppNames.length > 0 && !userInteracted) {
+        if (show && aurAppNames.length > 0 && !userInteractedRef.current) {
             setDismissed(false);
             setIsExiting(false);
             setShowConfirmation(false);
             setHelperChosen(false);
             setHasAnswered(null);
         }
-    }, [aurAppNames.length, show, userInteracted]);
+    }, [aurAppNames.length, show]);
 
     if (!show || dismissed) return null;
 
@@ -55,7 +55,7 @@ export function AurFloatingCard({
     const handleHelperSelect = (helper: 'yay' | 'paru') => {
         setSelectedHelper(helper);
         setHelperChosen(true);
-        setUserInteracted(true); // Don't ask again
+        userInteractedRef.current = true; // Don't ask again
 
         // Start exit animation after a brief moment
         setTimeout(() => {
@@ -67,7 +67,7 @@ export function AurFloatingCard({
     };
 
     const handleDismiss = () => {
-        setUserInteracted(true); // Don't ask again
+        userInteractedRef.current = true; // Don't ask again
         setIsExiting(true);
         setTimeout(() => {
             setDismissed(true);
@@ -87,11 +87,11 @@ export function AurFloatingCard({
         }, 3000);
 
         return (
-            <div className="fixed bottom-24 right-4 z-30">
+            <div className="fixed top-4 right-4 z-30">
                 <p
                     className="text-[13px] text-[var(--text-muted)]"
                     style={{
-                        animation: 'cardSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+                        animation: 'slideInFromRight 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
                     }}
                 >
                     You can change this later in preview tab
@@ -103,17 +103,17 @@ export function AurFloatingCard({
     // Hide cards while exiting
     if (isExiting && helperChosen) {
         return (
-            <div className="fixed bottom-24 right-4 z-30 flex flex-col gap-3 items-end">
+            <div className="fixed top-4 right-4 z-30 flex flex-col gap-3 items-end">
                 <div
                     className="w-72 bg-[var(--bg-secondary)] backdrop-blur-xl border border-[var(--border-primary)]/60 rounded-2xl shadow-xl shadow-black/10 overflow-hidden"
-                    style={{ animation: 'cardSlideOut 0.25s ease-out forwards' }}
+                    style={{ animation: 'slideOutToRight 0.25s ease-out forwards' }}
                 >
                     <div className="p-4" />
                 </div>
                 {hasAnswered !== null && (
                     <div
                         className="w-72 bg-[var(--bg-secondary)] backdrop-blur-xl border border-[var(--border-primary)]/60 rounded-2xl shadow-xl shadow-black/10 overflow-hidden"
-                        style={{ animation: 'cardSlideOut 0.2s ease-out forwards' }}
+                        style={{ animation: 'slideOutToRight 0.2s ease-out forwards' }}
                     >
                         <div className="p-4" />
                     </div>
@@ -123,7 +123,7 @@ export function AurFloatingCard({
     }
 
     return (
-        <div className="fixed bottom-24 right-4 z-30 flex flex-col gap-3 items-end">
+        <div className="fixed top-4 right-4 z-30 flex flex-col gap-3 items-end">
             {/* Card 1: Do you have an AUR helper? */}
             <div
                 className={`
@@ -135,8 +135,8 @@ export function AurFloatingCard({
                 `}
                 style={{
                     animation: isExiting
-                        ? 'cardSlideOut 0.2s ease-out forwards'
-                        : 'cardSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+                        ? 'slideOutToRight 0.2s ease-out forwards'
+                        : 'slideInFromRight 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
                 }}
             >
                 {/* Header */}
@@ -207,8 +207,8 @@ export function AurFloatingCard({
                     `}
                     style={{
                         animation: isExiting
-                            ? 'cardSlideOut 0.15s ease-out forwards'
-                            : 'cardSlideInSecond 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s forwards',
+                            ? 'slideOutToRight 0.15s ease-out forwards'
+                            : 'slideInFromRightSecond 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s forwards',
                         opacity: 0
                     }}
                 >

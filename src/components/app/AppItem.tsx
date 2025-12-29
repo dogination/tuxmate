@@ -64,11 +64,10 @@ export const AppItem = memo(function AppItem({
     onTooltipLeave,
     onFocus,
 }: AppItemProps) {
-    // Build unavailable tooltip text
+    // Build unavailable tooltip text (just the reason, no description)
     const getUnavailableText = () => {
-        if (app.unavailableReason) return app.unavailableReason;
         const distroName = distros.find(d => d.id === selectedDistro)?.name || '';
-        return `Not available in ${distroName} repos`;
+        return app.unavailableReason || `Not available in ${distroName} repos`;
     };
 
     const isAur = selectedDistro === 'arch' && app.targets?.arch && isAurPackage(app.targets.arch);
@@ -98,10 +97,11 @@ export const AppItem = memo(function AppItem({
                 }
             }}
             onMouseEnter={(e) => {
-                if (isAvailable) onTooltipEnter(app.description, e);
+                // Show description tooltip for all apps (available and unavailable)
+                onTooltipEnter(app.description, e);
             }}
             onMouseLeave={() => {
-                if (isAvailable) onTooltipLeave();
+                onTooltipLeave();
             }}
         >
             <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all duration-150

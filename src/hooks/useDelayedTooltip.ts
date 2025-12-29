@@ -62,12 +62,12 @@ export function useDelayedTooltip(delay = 600) {
 
     const hide = useCallback(() => {
         if (timerRef.current) clearTimeout(timerRef.current);
-        // Delay hide to allow moving to tooltip
+        // Delay hide to allow moving to tooltip (increased to 500ms for better usability)
         timerRef.current = setTimeout(() => {
             if (!isHoveringTooltip.current) {
                 setTooltip(null);
             }
-        }, 100);
+        }, 500);
     }, []);
 
     const onTooltipEnter = useCallback(() => {

@@ -1,114 +1,104 @@
 'use client';
 
-/**
- * Tooltip - Positioned tooltip with markdown-like formatting
- * 
- * Features:
- * - Supports inline code, bold text, and links
- * - Slide-up animation
- * - Arrow pointer
- * - Hover persistence (tooltip stays visible when hovered)
- * 
- * @param tooltip - Tooltip data (text, position, key)
- * @param onEnter - Callback when mouse enters tooltip
- * @param onLeave - Callback when mouse leaves tooltip
- * 
- * @example
- * <Tooltip
- *   tooltip={{ text: "Hello **world**", x: 100, y: 200, key: 1 }}
- *   onEnter={() => {}}
- *   onLeave={() => {}}
- * />
- */
-
-/**
- * Renders a single line with inline formatting
- */
-function renderLine(text: string) {
-    // Split by code, links, and bold
-    const parts = text.split(/(`[^`]+`|\[.*?\]\(.*?\)|\*\*.*?\*\*)/);
-    return parts.map((part, i) => {
-        // Check for inline code
-        const codeMatch = part.match(/^`([^`]+)`$/);
-        if (codeMatch) {
-            return (
-                <code key={i} className="bg-[var(--bg-primary)] px-1.5 py-0.5 rounded text-[var(--accent)] font-mono text-[10px] select-all break-all">
-                    {codeMatch[1]}
-                </code>
-            );
-        }
-        // Check for bold
-        const boldMatch = part.match(/^\*\*(.*?)\*\*$/);
-        if (boldMatch) {
-            return <strong key={i} className="font-semibold text-[var(--text-primary)]">{boldMatch[1]}</strong>;
-        }
-        // Check for links
-        const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/);
-        if (linkMatch) {
-            return (
-                <a key={i} href={linkMatch[2]} target="_blank" rel="noopener noreferrer"
-                    className="text-[var(--accent)] underline hover:opacity-80">
-                    {linkMatch[1]}
-                </a>
-            );
-        }
-        return <span key={i}>{part}</span>;
-    });
-}
-
-/**
- * Renders tooltip content with newline support
- */
-function renderTooltipContent(text: string) {
-    // First handle escaped newlines
-    const lines = text.split(/\\n/);
-
-    return lines.map((line, lineIdx) => (
-        <span key={lineIdx}>
-            {lineIdx > 0 && <br />}
-            {renderLine(line)}
-        </span>
-    ));
-}
+import React from 'react';
 
 export interface TooltipData {
     text: string;
     x: number;
     y: number;
-    width?: number;
-    key?: number;
+    width: number;
+    key: number;
 }
 
-export function Tooltip({
-    tooltip,
-    onEnter,
-    onLeave
-}: {
+interface TooltipProps {
     tooltip: TooltipData | null;
-    onEnter: () => void;
-    onLeave: () => void;
-}) {
+    onEnter?: () => void;
+    onLeave?: () => void;
+}
+
+/**
+ * Tooltip - Global tooltip component with refined styling and animation
+ * 
+ * Features:
+ * - Fixed positioning based on element coordinates
+ * - "Warm paper" aesthetic styling
+ * - Smooth entry animation
+ * - Markdown text rendering (bold, code, links)
+ * - Max width with wrapping
+ */
+export function Tooltip({ tooltip, onEnter, onLeave }: TooltipProps) {
     if (!tooltip) return null;
+
+    // Center horizontally relative to the element
+    const left = tooltip.x;
+    const top = tooltip.y;
+
+    // Helper to render markdown content
+    const renderContent = (text: string) => {
+        // Split by **bold**, `code`, or [link](url)
+        return text.split(/(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g).map((part, i) => {
+            // Bold
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return (
+                    <strong key={i} className="font-bold text-[var(--accent)]">
+                        {part.slice(2, -2)}
+                    </strong>
+                );
+            }
+            // Code
+            if (part.startsWith('`') && part.endsWith('`')) {
+                return (
+                    <code key={i} className="bg-[var(--bg-secondary)] px-1 rounded font-mono text-[var(--accent)] text-[10px]">
+                        {part.slice(1, -1)}
+                    </code>
+                );
+            }
+            // Link
+            if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
+                const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                if (match) {
+                    return (
+                        <a
+                            key={i}
+                            href={match[2]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[var(--accent)] underline decoration-[var(--accent)]/50 hover:decoration-[var(--accent)] font-semibold transition-all hover:text-emerald-500"
+                            onClick={(e) => e.stopPropagation()} // Prevent triggering parent clicks
+                        >
+                            {match[1]}
+                        </a>
+                    );
+                }
+            }
+            return <span key={i}>{part}</span>;
+        });
+    };
 
     return (
         <div
-            key={tooltip.key}
+            role="tooltip"
+            className="fixed z-50 pointer-events-auto"
+            style={{
+                left: left,
+                top: top,
+                transform: 'translate(-50%, -100%)',
+                // Using the specific key ensures fresh animation on new tooltip
+                animation: 'tooltipSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                maxWidth: '400px', // Limit width
+                width: 'max-content'
+            }}
             onMouseEnter={onEnter}
             onMouseLeave={onLeave}
-            className="fixed px-3 py-2.5 bg-[var(--bg-tertiary)] text-[var(--text-secondary)] text-xs rounded-lg shadow-xl border border-[var(--border-secondary)] max-w-[320px] leading-relaxed"
-            style={{
-                left: tooltip.x,
-                top: tooltip.y,
-                transform: 'translate(-50%, -100%)',
-                zIndex: 99999,
-                animation: 'tooltipSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-            }}>
-            {renderTooltipContent(tooltip.text)}
-            {/* Arrow pointer */}
-            <div
-                className="absolute left-1/2 -translate-x-1/2 w-3 h-3 bg-[var(--bg-tertiary)] border-r border-b border-[var(--border-secondary)] rotate-45"
-                style={{ bottom: '-7px' }}
-            />
+        >
+            <div className="relative mb-2 px-3 py-2 rounded-lg bg-[var(--bg-tertiary)] text-[var(--text-primary)] text-xs font-medium shadow-xl border border-[var(--border-primary)]/40 backdrop-blur-sm whitespace-normal break-words leading-relaxed">
+                {renderContent(tooltip.text)}
+
+                {/* Arrow pointer */}
+                <div
+                    className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[var(--bg-tertiary)] border-b border-r border-[var(--border-primary)]/40 rotate-45"
+                />
+            </div>
         </div>
     );
 }

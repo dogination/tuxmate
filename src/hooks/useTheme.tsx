@@ -22,9 +22,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [hydrated, setHydrated] = useState(false)
 
     useEffect(() => {
-        // On mount, sync with localStorage (which should match DOM already)
+        // On mount, sync with localStorage and mark as hydrated
         const saved = localStorage.getItem('theme') as Theme | null
-        if (saved) {
+        if (saved && saved !== theme) {
             setTheme(saved)
             document.documentElement.classList.toggle('light', saved === 'light')
         }
@@ -42,10 +42,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }, [])
 
     return (
-        <ThemeContext.Provider value= {{ theme, toggle }
-}>
-    { children }
-    </ThemeContext.Provider>
+        <ThemeContext.Provider value={{ theme, toggle }
+        }>
+            {children}
+        </ThemeContext.Provider>
     )
 }
 

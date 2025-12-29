@@ -17,6 +17,11 @@ interface ShortcutsBarProps {
 /**
  * ShortcutsBar - Neovim-style statusline with search on left, shortcuts on right
  * Uses theme-aware colors for dark/light mode compatibility
+ * 
+ * Enhancements:
+ * - Cleaner grouping of shortcuts
+ * - Better visual hierarchy
+ * - Softer separators
  */
 export const ShortcutsBar = forwardRef<HTMLInputElement, ShortcutsBarProps>(
     function ShortcutsBar({
@@ -36,13 +41,6 @@ export const ShortcutsBar = forwardRef<HTMLInputElement, ShortcutsBarProps>(
                 (e.target as HTMLInputElement).blur();
             }
         };
-
-        const helperShortcuts = showAur ? [
-            { key: '1', label: 'yay' },
-            { key: '2', label: 'paru' },
-        ] : [];
-
-
 
         return (
             <div className="bg-[var(--bg-tertiary)] border border-[var(--border-primary)] font-mono text-xs rounded-lg overflow-hidden">
@@ -94,67 +92,46 @@ export const ShortcutsBar = forwardRef<HTMLInputElement, ShortcutsBarProps>(
                             <div className="flex items-stretch border-r border-[var(--border-primary)]/30">
                                 <button
                                     onClick={() => setSelectedHelper('yay')}
-                                    className={`px-3 flex items-center gap-2 text-[10px] font-medium transition-colors border-r border-[var(--border-primary)]/30 whitespace-nowrap ${selectedHelper === 'yay' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'}`}
+                                    className={`px-3 flex items-center gap-1.5 text-[10px] font-medium transition-colors border-r border-[var(--border-primary)]/30 whitespace-nowrap ${selectedHelper === 'yay' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'}`}
                                 >
-                                    <span className="font-mono opacity-70">1</span>
+                                    <span className="font-mono opacity-50">1</span>
                                     yay
                                 </button>
                                 <button
                                     onClick={() => setSelectedHelper('paru')}
-                                    className={`px-3 flex items-center gap-2 text-[10px] font-medium transition-colors whitespace-nowrap ${selectedHelper === 'paru' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'}`}
+                                    className={`px-3 flex items-center gap-1.5 text-[10px] font-medium transition-colors whitespace-nowrap ${selectedHelper === 'paru' ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]'}`}
                                 >
-                                    <span className="font-mono opacity-70">2</span>
+                                    <span className="font-mono opacity-50">2</span>
                                     paru
                                 </button>
                             </div>
                         )}
                     </div>
 
-                    {/* RIGHT SECTION - Shortcuts */}
+                    {/* RIGHT SECTION - Compact Shortcuts */}
                     <div className="flex items-stretch">
-                        <div className="hidden sm:flex items-center gap-4 px-4 py-1 text-[var(--text-muted)] text-[11px] font-medium border-l border-[var(--border-primary)]/30">
-                            {/* Navigation Group */}
-                            <div className="hidden lg:flex items-center gap-1.5 transition-opacity hover:opacity-100">
-                                <span className="font-mono text-[10px] tracking-widest text-[var(--text-muted)]">NAV</span>
-                                <div className="flex items-center gap-1 font-mono text-[var(--text-primary)]">
-                                    <span>↓←↑→</span>
-                                    <span className="opacity-50">/</span>
-                                    <span>hjkl</span>
-                                </div>
-                            </div>
-
-                            {/* Separator */}
-                            <div className="w-px h-3 bg-[var(--border-primary)]/40 hidden lg:block"></div>
-
-                            {/* Actions Group */}
-                            <div className="flex items-center gap-4">
-                                {[...helperShortcuts,
-                                { key: '/', label: 'Search' },
-                                { key: 'Space', label: 'Toggle' },
-                                { key: 'y', label: 'Copy' },
-                                { key: 'd', label: 'Download' },
-                                { key: 'c', label: 'Clear' },
-                                { key: 't', label: 'Theme' }
-                                ].map(({ key, label }) => (
-                                    <div key={key} className="flex items-center gap-1.5 group cursor-help transition-colors hover:text-[var(--text-primary)]">
-                                        <span className={`font-mono font-bold transition-colors ${showAur && (key === '1' || key === '2') ? 'text-[#1793d1]' : 'text-[var(--text-primary)] group-hover:text-[#1793d1]'}`}>
-                                            {key}
-                                        </span>
-                                        <span className="opacity-60 group-hover:opacity-100 transition-opacity">{label}</span>
-                                    </div>
-                                ))}
-
-                                <div className="flex items-center gap-4 border-l border-[var(--border-primary)]/40 pl-4">
-                                    <div className="flex items-center gap-1.5 transition-colors hover:text-[var(--text-primary)]">
-                                        <span className="font-mono font-bold text-[var(--text-primary)]">Esc</span>
-                                        <span className="opacity-60">Back</span>
-                                    </div>
-                                    <div className="flex items-center gap-1.5 transition-colors hover:text-[var(--text-primary)]">
-                                        <span className="font-mono font-bold text-[var(--text-primary)]">Tab</span>
-                                        <span className="opacity-60">Preview</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="hidden sm:flex items-center gap-3 px-3 py-1 text-[var(--text-muted)] text-[10px] border-l border-[var(--border-primary)]/30">
+                            {/* Navigation */}
+                            <span className="hidden lg:inline"><b className="text-[var(--text-secondary)]">↓←↑→ </b>/<b className="text-[var(--text-secondary)]"> hjkl</b> Navigation</span>
+                            <span className="hidden lg:inline opacity-30">·</span>
+                            {/* Actions */}
+                            <span><b className="text-[var(--text-secondary)]">/</b> search</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">Space</b> toggle</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">y</b> copy</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">d</b> download</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">c</b> clear</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">t</b> theme</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">Tab</b> preview</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">Esc</b> back</span>
+                            <span className="opacity-30">·</span>
+                            <span><b className="text-[var(--text-secondary)]">?</b> help</span>
                         </div>
 
                         {/* End badge - like nvim line:col */}

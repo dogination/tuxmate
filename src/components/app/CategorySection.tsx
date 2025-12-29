@@ -58,7 +58,7 @@ function CategorySectionComponent({
     const hasAnimated = useRef(false);
     const prevAppCount = useRef(categoryApps.length);
 
-    // Initial entrance animation
+    // Initial entrance animation - GPU optimized
     useLayoutEffect(() => {
         if (!sectionRef.current || hasAnimated.current) return;
         hasAnimated.current = true;
@@ -67,27 +67,33 @@ function CategorySectionComponent({
         const header = section.querySelector('.category-header');
         const items = section.querySelectorAll('.app-item');
 
-        // Initial state
-        gsap.set(header, { clipPath: 'inset(0 100% 0 0)' });
-        gsap.set(items, { y: -20, opacity: 0 });
+        // Use requestAnimationFrame for smoother initial setup
+        requestAnimationFrame(() => {
+            // Initial state with GPU-accelerated transforms
+            gsap.set(header, { clipPath: 'inset(0 100% 0 0)' });
+            gsap.set(items, { y: -15, opacity: 0, force3D: true });
 
-        // Animate with staggered delay based on category index
-        const delay = categoryIndex * 0.08;
+            // Staggered delay based on category index (reduced for faster feel)
+            const delay = categoryIndex * 0.05;
 
-        gsap.to(header, {
-            clipPath: 'inset(0 0% 0 0)',
-            duration: 0.9,
-            ease: 'power3.out',
-            delay: delay + 0.1
-        });
+            // Animate header with clip-path reveal
+            gsap.to(header, {
+                clipPath: 'inset(0 0% 0 0)',
+                duration: 0.6,
+                ease: 'power2.out',
+                delay: delay + 0.05
+            });
 
-        gsap.to(items, {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            stagger: 0.04,
-            ease: 'expo.out',
-            delay: delay + 0.2
+            // Animate items with GPU-accelerated transforms
+            gsap.to(items, {
+                y: 0,
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.025,
+                ease: 'power2.out',
+                delay: delay + 0.1,
+                force3D: true
+            });
         });
     }, [categoryIndex]);
 
