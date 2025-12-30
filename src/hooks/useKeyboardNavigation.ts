@@ -138,7 +138,7 @@ export function useKeyboardNavigation(
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [navItems, focusPos, onToggleCategory, onToggleApp]);
 
-    /* Scroll focused item into view automatically */
+    /* Scroll focused item into view instantly */
     useEffect(() => {
         if (!focusPos) return;
 
@@ -150,13 +150,14 @@ export function useKeyboardNavigation(
         );
 
         if (!el) return;
-        
+
         el.scrollIntoView({
-            block: 'nearest',
+            behavior: 'auto',
+            block: 'center',
             inline: 'nearest',
         });
     }, [focusPos, navItems]);
-    
+
     return {
         focusPos,
         focusedItem,

@@ -75,8 +75,10 @@ body::before {
     border-radius: 3px;
 }
 
+/* Scroll margin to keep focused items visible during keyboard navigation */
 [data-nav-id] {
-    scroll-margin: 200px;
+    scroll-margin-block: 100px 150px;
+    /* top: 100px, bottom: 150px for shortcuts bar */
 }
 
 html {
