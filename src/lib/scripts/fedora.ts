@@ -1,6 +1,4 @@
-/**
- * Fedora script generator with RPM Fusion support
- */
+// Fedora script - dnf with RPM Fusion auto-enable
 
 import { generateAsciiHeader, generateSharedUtils, escapeShellString, type PackageInfo } from './shared';
 

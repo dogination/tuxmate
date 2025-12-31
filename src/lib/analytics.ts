@@ -9,10 +9,7 @@ declare global {
     }
 }
 
-/**
- * Track a custom event with Umami
- * Safe to call even if Umami hasn't loaded yet
- */
+// Safe wrapper - works even if Umami hasn't loaded yet
 export function track(
     eventName: string,
     eventData?: Record<string, string | number | boolean>
@@ -22,9 +19,7 @@ export function track(
     }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// EVENT NAMES - Descriptive names for Umami dashboard
-// ═══════════════════════════════════════════════════════════════
+// Event names for the Umami dashboard
 
 export const EVENTS = {
     // Distro Selection
@@ -50,67 +45,42 @@ export const EVENTS = {
     CATEGORY_COLLAPSED: 'Category Collapsed',
 } as const;
 
-// ═══════════════════════════════════════════════════════════════
-// CONVENIENCE FUNCTIONS - Type-safe tracking helpers
-// ═══════════════════════════════════════════════════════════════
+// Helper functions so we don't have to remember event names
 
 export const analytics = {
-    /** Track distro selection */
     distroSelected: (distro: string) => {
         track(EVENTS.DISTRO_SELECTED, { distro });
     },
-
-    /** Track app selection */
     appSelected: (app: string, category: string, distro: string) => {
         track(EVENTS.APP_SELECTED, { app, category, distro });
     },
-
-    /** Track app deselection */
     appDeselected: (app: string, category: string, distro: string) => {
         track(EVENTS.APP_DESELECTED, { app, category, distro });
     },
-
-    /** Track command copy */
     commandCopied: (distro: string, appCount: number) => {
         track(EVENTS.COMMAND_COPIED, { distro, apps: appCount });
     },
-
-    /** Track script download */
     scriptDownloaded: (distro: string, appCount: number) => {
         track(EVENTS.SCRIPT_DOWNLOADED, { distro, apps: appCount });
     },
-
-    /** Track GitHub link click */
     githubClicked: () => {
         track(EVENTS.GITHUB_CLICKED);
     },
-
-    /** Track contribute link click */
     contributeClicked: () => {
         track(EVENTS.CONTRIBUTE_CLICKED);
     },
-
-    /** Track help popup opened */
     helpOpened: () => {
         track(EVENTS.HELP_OPENED);
     },
-
-    /** Track help popup closed */
     helpClosed: () => {
         track(EVENTS.HELP_CLOSED);
     },
-
-    /** Track theme change */
     themeChanged: (theme: 'light' | 'dark') => {
         track(EVENTS.THEME_CHANGED, { theme });
     },
-
-    /** Track category expand */
     categoryExpanded: (category: string) => {
         track(EVENTS.CATEGORY_EXPANDED, { category });
     },
-
-    /** Track category collapse */
     categoryCollapsed: (category: string) => {
         track(EVENTS.CATEGORY_COLLAPSED, { category });
     },

@@ -1,6 +1,4 @@
-/**
- * Shared utilities and types for script generation
- */
+// Stuff shared across all distro script generators
 
 import { apps, type DistroId, type AppData } from '../data';
 
@@ -9,10 +7,7 @@ export interface PackageInfo {
     pkg: string;
 }
 
-/**
- * Escape special characters for safe use in shell scripts
- * Prevents injection attacks from malicious app/package names
- */
+// Don't let anyone sneak shell commands through app names :)
 export function escapeShellString(str: string): string {
     return str
         .replace(/\\/g, '\\\\')   // Escape backslashes first

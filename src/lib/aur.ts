@@ -1,9 +1,4 @@
-/**
- * AUR Package Detection
- * 
- * Centralized source of truth for identifying Arch User Repository packages.
- * Used by both useLinuxInit (for UI indicators) and generateInstallScript (for script generation).
- */
+// AUR package detection - figures out if a package is from AUR or official repos
 
 /** Patterns that indicate an AUR package (suffixes) */
 export const AUR_PATTERNS = ['-bin', '-git', '-appimage'];

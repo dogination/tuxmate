@@ -2,10 +2,7 @@
 
 import { useEffect } from 'react';
 
-/**
- * Error Boundary for the application
- * Catches runtime errors and provides recovery option
- */
+// Next.js error boundary - shows when something explodes
 export default function Error({
     error,
     reset,

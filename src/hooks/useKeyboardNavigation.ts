@@ -3,45 +3,21 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { type Category } from '@/lib/data';
 
-/**
- * Navigation item for grid-based keyboard navigation
- */
+// What we're navigating to
 export interface NavItem {
     type: 'category' | 'app';
     id: string;
     category: Category;
 }
 
-/**
- * Focus position in the navigation grid
- */
+// Where we are in the grid
 export interface FocusPosition {
     col: number;
     row: number;
 }
 
-/**
- * useKeyboardNavigation - Grid-based keyboard navigation for app selection
- * 
- * Features:
- * - Arrow keys (↑↓←→) and vim keys (hjkl) for navigation
- * - Space to toggle selection
- * - Escape to clear focus
- * - Skips input fields
- * 
- * @param navItems - 2D array of navigation items (columns × rows)
- * @param onToggleCategory - Callback when space is pressed on a category
- * @param onToggleApp - Callback when space is pressed on an app
- * 
- * @returns Object with focus state and control functions
- * 
- * @example
- * const { focusedItem, clearFocus, setFocusByItem } = useKeyboardNavigation(
- *   navItems,
- *   (id) => toggleCategoryExpanded(id),
- *   (id) => toggleApp(id)
- * );
- */
+
+// Vim-style keyboard navigation. Because real devs don't use mice.
 export function useKeyboardNavigation(
     navItems: NavItem[][],
     onToggleCategory: (id: string) => void,

@@ -37,7 +37,7 @@ export const SearchBox = forwardRef<HTMLInputElement, SearchBoxProps>(
                         placeholder:text-[var(--text-muted)]
                         outline-none
                         focus:border-[var(--accent-primary)]
-                        transition-all duration-200
+                        transition-colors duration-200
                     "
                 />
                 {query && (

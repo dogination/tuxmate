@@ -8,9 +8,7 @@ interface AurDrawerSettingsProps {
     setSelectedHelper: (helper: 'yay' | 'paru') => void;
 }
 
-/**
- * AurDrawerSettings - Compact UI with smooth button animations
- */
+// AUR settings inside the command drawer
 export function AurDrawerSettings({
     aurAppNames,
     hasYayInstalled,
@@ -36,9 +34,9 @@ export function AurDrawerSettings({
                     <div className="flex bg-[var(--bg-secondary)] rounded-lg p-1 border border-[var(--border-primary)]/30">
                         <button
                             onClick={() => setSelectedHelper('yay')}
-                            className={`relative px-3 py-1.5 rounded-md font-medium transition-all duration-200 ease-out ${selectedHelper === 'yay'
-                                    ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
-                                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                            className={`relative px-3 py-1.5 rounded-md font-medium transition-[background-color,color,transform] duration-200 ease-out ${selectedHelper === 'yay'
+                                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
+                                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                                 }`}
                             style={{
                                 transform: selectedHelper === 'yay' ? 'scale(1)' : 'scale(0.98)',
@@ -48,9 +46,9 @@ export function AurDrawerSettings({
                         </button>
                         <button
                             onClick={() => setSelectedHelper('paru')}
-                            className={`relative px-3 py-1.5 rounded-md font-medium transition-all duration-200 ease-out ${selectedHelper === 'paru'
-                                    ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
-                                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                            className={`relative px-3 py-1.5 rounded-md font-medium transition-[background-color,color,transform] duration-200 ease-out ${selectedHelper === 'paru'
+                                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
+                                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                                 }`}
                             style={{
                                 transform: selectedHelper === 'paru' ? 'scale(1)' : 'scale(0.98)',
@@ -70,9 +68,9 @@ export function AurDrawerSettings({
                     <div className="flex bg-[var(--bg-secondary)] rounded-lg p-1 border border-[var(--border-primary)]/30">
                         <button
                             onClick={() => setHasYayInstalled(true)}
-                            className={`relative px-3 py-1.5 rounded-md font-medium transition-all duration-200 ease-out ${hasYayInstalled
-                                    ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
-                                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                            className={`relative px-3 py-1.5 rounded-md font-medium transition-[background-color,color,transform] duration-200 ease-out ${hasYayInstalled
+                                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
+                                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                                 }`}
                             style={{
                                 transform: hasYayInstalled ? 'scale(1)' : 'scale(0.98)',
@@ -82,9 +80,9 @@ export function AurDrawerSettings({
                         </button>
                         <button
                             onClick={() => setHasYayInstalled(false)}
-                            className={`relative px-3 py-1.5 rounded-md font-medium transition-all duration-200 ease-out ${!hasYayInstalled
-                                    ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
-                                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                            className={`relative px-3 py-1.5 rounded-md font-medium transition-[background-color,color,transform] duration-200 ease-out ${!hasYayInstalled
+                                ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
+                                : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                                 }`}
                             style={{
                                 transform: !hasYayInstalled ? 'scale(1)' : 'scale(0.98)',

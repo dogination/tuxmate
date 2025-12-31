@@ -20,26 +20,10 @@ import { CategorySection } from '@/components/app';
 import { CommandFooter } from '@/components/command';
 import { Tooltip, GlobalStyles, LoadingSkeleton } from '@/components/common';
 
+// The main event
 
-// ============================================================================
-// Main Page Component
-// ============================================================================
-
-/**
- * Home - Main TuxMate application page
- * 
- * This is the root component that composes all the UI elements:
- * - Header with logo, links, and controls
- * - App grid organized by categories
- * - Command footer with copy/download functionality
- * 
- * State management is handled by the useLinuxInit hook.
- * Keyboard navigation is handled by the useKeyboardNavigation hook.
- */
 export default function Home() {
-    // ========================================================================
-    // State & Hooks
-    // ========================================================================
+    // All the state we need to make this thing work
 
     const { tooltip, show: showTooltip, hide: hideTooltip, onTooltipEnter, onTooltipLeave } = useDelayedTooltip(600);
 
@@ -84,11 +68,8 @@ export default function Home() {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    // ========================================================================
-    // Category & Column Layout
-    // ========================================================================
 
-    /** All categories with their apps (filtered by search) */
+    // Distribute apps into a nice grid
     const allCategoriesWithApps = useMemo(() => {
         const query = searchQuery.toLowerCase().trim();
         return categories
@@ -106,10 +87,10 @@ export default function Home() {
             .filter(c => c.apps.length > 0);
     }, [searchQuery]);
 
-    /** Number of columns for the app grid layout */
+    // 5 columns looks good on most screens
     const COLUMN_COUNT = 5;
 
-    /** Distribute categories across columns for balanced layout */
+    // Tetris-style packing: shortest column gets the next category
     const columns = useMemo(() => {
         const cols: Array<typeof allCategoriesWithApps> = Array.from({ length: COLUMN_COUNT }, () => []);
         const heights = Array(COLUMN_COUNT).fill(0);
@@ -135,11 +116,8 @@ export default function Home() {
         });
     }, []);
 
-    // ========================================================================
-    // Keyboard Navigation
-    // ========================================================================
 
-    /** Build navigation items from columns and expanded categories */
+    // Build nav items for keyboard navigation (vim keys ftw)
     const navItems = useMemo(() => {
         const items: NavItem[][] = [];
         columns.forEach((colCategories) => {
@@ -174,7 +152,7 @@ export default function Home() {
         const title = header.querySelector('.header-animate');
         const controls = header.querySelector('.header-controls');
 
-        // Animate title with clip-path reveal
+        // Fancy clip-path reveal for the logo
         gsap.fromTo(title,
             { clipPath: 'inset(0 100% 0 0)' },
             {
@@ -201,9 +179,8 @@ export default function Home() {
         );
     }, [isHydrated]);
 
-    // ========================================================================
-    // Loading State (must be AFTER all hooks)
-    // ========================================================================
+
+    // Don't render until we've loaded from localStorage (avoids flash)
 
     // Show loading skeleton until localStorage is hydrated
     if (!isHydrated) {
@@ -264,12 +241,12 @@ export default function Home() {
                                         <span className="text-[var(--text-muted)] opacity-30 hidden sm:inline">·</span>
                                         <button
                                             onClick={clearAll}
-                                            className="group flex items-center gap-1.5 text-sm text-[var(--text-muted)] hover:text-rose-500 transition-all duration-300"
+                                            className="group flex items-center gap-1.5 text-sm text-[var(--text-muted)] hover:text-rose-500 transition-colors duration-300"
                                         >
                                             <X className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90" />
                                             <span className="hidden sm:inline relative">
                                                 Clear ({selectedCount})
-                                                <span className="absolute bottom-0 left-0 w-0 h-px bg-rose-400 transition-all duration-300 group-hover:w-full" />
+                                                <span className="absolute bottom-0 left-0 w-0 h-px bg-rose-400 transition-[width] duration-300 group-hover:w-full" />
                                             </span>
                                         </button>
                                     </>

@@ -1,11 +1,5 @@
-/**
- * Generate install scripts for Linux distributions
- * 
- * This module provides the main entry point for generating
- * distribution-specific installation scripts.
- * 
- * Each distro has its own module in ./scripts/ for easier maintenance.
- */
+// Main entry point for generating install scripts.
+// Each distro has its own module - keeps things sane.
 
 import { distros, type DistroId } from './data';
 import {
@@ -26,9 +20,7 @@ interface ScriptOptions {
     helper?: 'yay' | 'paru';
 }
 
-/**
- * Generate a full installation script with progress bars, error handling, and retries
- */
+// The full fancy script with progress bars and all that jazz
 export function generateInstallScript(options: ScriptOptions): string {
     const { distroId, selectedAppIds, helper = 'yay' } = options;
     const distro = distros.find(d => d.id === distroId);
@@ -51,9 +43,7 @@ export function generateInstallScript(options: ScriptOptions): string {
     }
 }
 
-/**
- * Generate a simple one-liner command for quick copy-paste
- */
+// Quick one-liner for copy-paste warriors
 export function generateSimpleCommand(selectedAppIds: Set<string>, distroId: DistroId): string {
     const packages = getSelectedPackages(selectedAppIds, distroId);
     if (packages.length === 0) return '# No packages selected';

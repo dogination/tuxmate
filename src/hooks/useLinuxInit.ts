@@ -7,8 +7,7 @@ import { isAurPackage } from '@/lib/aur';
 // Re-export for backwards compatibility
 export { isAurPackage, AUR_PATTERNS, KNOWN_AUR_PACKAGES } from '@/lib/aur';
 
-
-// ... (previous imports)
+// Everything the app needs to work
 
 export interface UseLinuxInitReturn {
     selectedDistro: DistroId;
@@ -37,16 +36,16 @@ export interface UseLinuxInitReturn {
 const STORAGE_KEY_DISTRO = 'linuxinit_distro';
 const STORAGE_KEY_APPS = 'linuxinit_apps';
 const STORAGE_KEY_YAY = 'linuxinit_yay_installed';
-const STORAGE_KEY_HELPER = 'linuxinit_selected_helper'; // New storage key
+const STORAGE_KEY_HELPER = 'linuxinit_selected_helper';
 
 export function useLinuxInit(): UseLinuxInitReturn {
     const [selectedDistro, setSelectedDistroState] = useState<DistroId>('ubuntu');
     const [selectedApps, setSelectedApps] = useState<Set<string>>(new Set());
     const [hasYayInstalled, setHasYayInstalled] = useState(false);
-    const [selectedHelper, setSelectedHelper] = useState<'yay' | 'paru'>('yay'); // New state
+    const [selectedHelper, setSelectedHelper] = useState<'yay' | 'paru'>('yay');
     const [hydrated, setHydrated] = useState(false);
 
-    // Hydrate from localStorage on mount
+    // Load saved preferences from localStorage
     useEffect(() => {
         try {
             const savedDistro = localStorage.getItem(STORAGE_KEY_DISTRO) as DistroId | null;

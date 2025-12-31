@@ -1,6 +1,4 @@
-/**
- * Flatpak script generator with parallel install
- */
+// Flatpak script - parallel install when 3+ packages
 
 import { generateAsciiHeader, generateSharedUtils, escapeShellString, type PackageInfo } from './shared';
 

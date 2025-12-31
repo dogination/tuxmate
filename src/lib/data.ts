@@ -33,7 +33,7 @@ export interface AppData {
     category: Category;
     iconUrl: string;
     targets: Partial<Record<DistroId, string>>;
-    /** Markdown content shown when app unavailable. Same message for all distros. */
+    // Markdown shown when app unavailable (same for all distros)
     unavailableReason?: string;
 }
 

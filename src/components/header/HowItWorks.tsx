@@ -5,16 +5,7 @@ import { createPortal } from 'react-dom';
 import { HelpCircle, X } from 'lucide-react';
 import { analytics } from '@/lib/analytics';
 
-/**
- * HowItWorks - Interactive help modal with quick start guide
- * 
- * Displays a centered modal with backdrop blur, containing:
- * - Quick start steps for using TuxMate
- * - Info about unavailable apps
- * - Arch/AUR specific info
- * - Keyboard shortcuts
- * - Pro tips
- */
+// The "?" help modal - shows keyboard shortcuts and how to use the app
 export function HowItWorks() {
     const [isOpen, setIsOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
@@ -283,7 +274,7 @@ export function HowItWorks() {
             <button
                 ref={triggerRef}
                 onClick={handleOpen}
-                className={`flex items-center gap-1.5 text-sm transition-all duration-200 hover:scale-105 ${isOpen ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'}`}
+                className={`flex items-center gap-1.5 text-sm transition-[color,transform] duration-200 hover:scale-105 ${isOpen ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'}`}
             >
                 <HelpCircle className="w-4 h-4" />
                 <span className="hidden sm:inline whitespace-nowrap">How it works?</span>

@@ -7,16 +7,7 @@ import { analytics } from '@/lib/analytics';
 import { CategoryHeader } from './CategoryHeader';
 import { AppItem } from './AppItem';
 
-/**
- * CategorySection - Full category section with apps grid
- * 
- * Features:
- * - GSAP entrance animation with staggered reveals
- * - Expandable/collapsible content
- * - Keyboard navigation support
- * - Analytics tracking for expand/collapse
- */
-
+// A category with its apps - handles animations and expand/collapse
 interface CategorySectionProps {
     category: Category;
     categoryApps: AppData[];
@@ -126,7 +117,7 @@ function CategorySectionComponent({
                 onFocus={onCategoryFocus}
             />
             <div
-                className={`overflow-hidden transition-all duration-500 ${isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
+                className={`overflow-hidden transition-[max-height,opacity] duration-500 ${isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
                 style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
             >
                 {categoryApps.map((app) => (

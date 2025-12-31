@@ -16,16 +16,7 @@ interface TooltipProps {
     onLeave?: () => void;
 }
 
-/**
- * Tooltip - Global tooltip component with refined styling and animation
- * 
- * Features:
- * - Fixed positioning based on element coordinates
- * - "Warm paper" aesthetic styling
- * - Smooth entry animation
- * - Markdown text rendering (bold, code, links)
- * - Max width with wrapping
- */
+// Floating tooltip with markdown rendering - follows the cursor around
 export function Tooltip({ tooltip, onEnter, onLeave }: TooltipProps) {
     if (!tooltip) return null;
 
@@ -63,7 +54,7 @@ export function Tooltip({ tooltip, onEnter, onLeave }: TooltipProps) {
                             href={match[2]}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[var(--accent)] underline decoration-[var(--accent)]/50 hover:decoration-[var(--accent)] font-semibold transition-all hover:text-emerald-500"
+                            className="text-[var(--accent)] underline decoration-[var(--accent)]/50 hover:decoration-[var(--accent)] font-semibold transition-colors hover:text-emerald-500"
                             onClick={(e) => e.stopPropagation()} // Prevent triggering parent clicks
                         >
                             {match[1]}

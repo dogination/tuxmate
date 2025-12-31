@@ -1,6 +1,4 @@
-/**
- * Snap script generator
- */
+// Snap script
 
 import { generateAsciiHeader, generateSharedUtils, escapeShellString, type PackageInfo } from './shared';
 

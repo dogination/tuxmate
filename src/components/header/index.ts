@@ -1,11 +1,4 @@
-/**
- * Header Components
- * 
- * Components used in the main header area:
- * - HowItWorks: Help popup with quick start guide
- * - GitHubLink: Link to GitHub repository
- * - ContributeLink: Link to contribution guide
- */
+// Header area components
 
 export { HowItWorks } from './HowItWorks';
 export { GitHubLink } from './GitHubLink';

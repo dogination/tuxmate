@@ -12,10 +12,7 @@ interface AurFloatingCardProps {
     setSelectedHelper: (helper: 'yay' | 'paru') => void;
 }
 
-/**
- * AurFloatingCard - Elegant floating notification cards for AUR helper configuration
- * Smooth spring animations, auto-dismisses after selection
- */
+// Floating cards that ask Arch users about their AUR helper (yay vs paru drama)
 export function AurFloatingCard({
     show,
     aurAppNames,
@@ -131,7 +128,7 @@ export function AurFloatingCard({
                     border border-[var(--border-primary)]/60 
                     rounded-2xl shadow-xl shadow-black/10
                     overflow-hidden
-                    transition-all duration-200
+                    transition-[box-shadow,border-color] duration-200
                 `}
                 style={{
                     animation: isExiting
@@ -164,7 +161,7 @@ export function AurFloatingCard({
                         onClick={() => handleFirstAnswer(true)}
                         className={`
                             flex-1 py-2 px-4 rounded-xl text-sm font-medium 
-                            transition-all duration-200 ease-out
+                            transition-[background-color,color] duration-200 ease-out
                             ${hasAnswered === true
                                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
                                 : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
@@ -177,7 +174,7 @@ export function AurFloatingCard({
                         onClick={() => handleFirstAnswer(false)}
                         className={`
                             flex-1 py-2 px-4 rounded-xl text-sm font-medium 
-                            transition-all duration-200 ease-out
+                            transition-[background-color,color] duration-200 ease-out
                             ${hasAnswered === false
                                 ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
                                 : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
@@ -235,7 +232,7 @@ export function AurFloatingCard({
                             onClick={() => handleHelperSelect('yay')}
                             className={`
                                 flex-1 py-2.5 px-4 rounded-xl text-sm font-medium 
-                                transition-all duration-200 ease-out
+                                transition-[background-color,color] duration-200 ease-out
                                 ${selectedHelper === 'yay' && helperChosen
                                     ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
                                     : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
@@ -251,7 +248,7 @@ export function AurFloatingCard({
                             onClick={() => handleHelperSelect('paru')}
                             className={`
                                 flex-1 py-2.5 px-4 rounded-xl text-sm font-medium 
-                                transition-all duration-200 ease-out
+                                transition-[background-color,color] duration-200 ease-out
                                 ${selectedHelper === 'paru' && helperChosen
                                     ? 'bg-[var(--text-primary)] text-[var(--bg-primary)] shadow-sm'
                                     : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'

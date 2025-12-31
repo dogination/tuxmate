@@ -36,7 +36,7 @@ export function AurPopover({
                 onClick={() => setIsOpen(!isOpen)}
                 className={`
                     flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium
-                    transition-all duration-200
+                    transition-[background-color,color] duration-200
                     ${isOpen
                         ? 'bg-amber-500/20 text-amber-400'
                         : 'bg-amber-500/10 text-amber-500 hover:bg-amber-500/20'
@@ -84,7 +84,7 @@ export function AurPopover({
                                     className="sr-only"
                                 />
                                 <div
-                                    className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all
+                                    className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors
                                         ${hasYayInstalled
                                             ? 'bg-amber-500 border-amber-500'
                                             : 'bg-[var(--bg-primary)] border-[var(--border-secondary)] group-hover:border-amber-500'

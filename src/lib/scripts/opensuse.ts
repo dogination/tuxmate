@@ -1,6 +1,4 @@
-/**
- * openSUSE script generator
- */
+// openSUSE script - zypper
 
 import { generateAsciiHeader, generateSharedUtils, escapeShellString, type PackageInfo } from './shared';
 

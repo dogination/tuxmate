@@ -14,15 +14,7 @@ interface ShortcutsBarProps {
     setSelectedHelper: (helper: 'yay' | 'paru') => void;
 }
 
-/**
- * ShortcutsBar - Neovim-style statusline with search on left, shortcuts on right
- * Uses theme-aware colors for dark/light mode compatibility
- * 
- * Enhancements:
- * - Cleaner grouping of shortcuts
- * - Better visual hierarchy
- * - Softer separators
- */
+// Neovim-style statusline - looks cool and shows all the keyboard shortcuts
 export const ShortcutsBar = forwardRef<HTMLInputElement, ShortcutsBarProps>(
     function ShortcutsBar({
         searchQuery,

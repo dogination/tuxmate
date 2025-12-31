@@ -2,24 +2,7 @@
 
 import { Check } from 'lucide-react';
 
-/**
- * AurBar - Arch User Repository packages info bar
- * 
- * Displays information about AUR packages that will be installed,
- * with a checkbox to indicate if yay is already installed.
- * Only visible when Arch is selected and AUR packages are chosen.
- * 
- * @param aurAppNames - Array of app names that require AUR
- * @param hasYayInstalled - Whether the user has yay installed
- * @param setHasYayInstalled - Callback to update yay installation status
- * 
- * @example
- * <AurBar
- *   aurAppNames={["YakYak", "Discord"]}
- *   hasYayInstalled={false}
- *   setHasYayInstalled={(value) => setHasYay(value)}
- * />
- */
+// Shows AUR packages in a bar with "I have yay" checkbox
 export function AurBar({
     aurAppNames,
     hasYayInstalled,
@@ -67,7 +50,7 @@ export function AurBar({
                                 className="sr-only"
                             />
                             <div
-                                className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all duration-150
+                                className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors duration-150
                                     ${hasYayInstalled
                                         ? 'bg-[var(--accent)] border-[var(--accent)]'
                                         : 'bg-[var(--bg-primary)] border-[var(--border-secondary)] group-hover:border-[var(--accent)]'}`}

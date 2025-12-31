@@ -2,30 +2,7 @@
 
 import { ChevronRight } from 'lucide-react';
 
-/**
- * CategoryHeader - Expandable category header with selection count
- * 
- * Features:
- * - Chevron rotation animation on expand/collapse
- * - Selection count badge
- * - Focus state for keyboard navigation
- * 
- * @param category - Category name
- * @param isExpanded - Whether the category is expanded
- * @param isFocused - Whether the header has keyboard focus
- * @param onToggle - Callback to toggle expansion
- * @param selectedCount - Number of selected apps in this category
- * @param onFocus - Optional callback when header receives focus
- * 
- * @example
- * <CategoryHeader
- *   category="Browsers"
- *   isExpanded={true}
- *   isFocused={false}
- *   onToggle={() => toggleCategory("Browsers")}
- *   selectedCount={3}
- * />
- */
+// Clickable category header with chevron and selection count
 export function CategoryHeader({
     category,
     isExpanded,

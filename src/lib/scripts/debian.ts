@@ -1,6 +1,4 @@
-/**
- * Debian script generator
- */
+// Debian script - apt-get with dependency auto-fix
 
 import { generateAsciiHeader, generateSharedUtils, escapeShellString, type PackageInfo } from './shared';
 

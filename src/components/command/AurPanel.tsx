@@ -9,10 +9,7 @@ interface AurPanelProps {
     setHasYayInstalled: (value: boolean) => void;
 }
 
-/**
- * AurPanel - Beginner-friendly AUR configuration panel
- * Shows when AUR packages are selected, with clear explanations
- */
+// Expandable panel for AUR settings - explains what AUR helpers are for confused users
 export function AurPanel({
     aurAppNames,
     hasYayInstalled,
@@ -55,7 +52,7 @@ export function AurPanel({
                 onClick={() => setIsExpanded(!isExpanded)}
                 className={`
                     flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium
-                    transition-all duration-200 border
+                    transition-[background-color,color,border-color] duration-200 border
                     ${isExpanded
                         ? 'bg-amber-500/20 text-amber-400 border-amber-500/40'
                         : 'bg-amber-500/10 text-amber-500 border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40'
@@ -115,7 +112,7 @@ export function AurPanel({
                                     className="sr-only"
                                 />
                                 <div
-                                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all
+                                    className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors
                                         ${hasYayInstalled
                                             ? 'bg-emerald-500 border-emerald-500'
                                             : 'bg-[var(--bg-primary)] border-[var(--border-secondary)] group-hover:border-emerald-500'
@@ -144,7 +141,7 @@ export function AurPanel({
                         <div className="flex gap-2">
                             <button
                                 onClick={() => setSelectedHelper('yay')}
-                                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all border
+                                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-[background-color,color,border-color] border
                                     ${selectedHelper === 'yay'
                                         ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/40'
                                         : 'bg-[var(--bg-tertiary)] text-[var(--text-muted)] border-[var(--border-primary)] hover:text-[var(--text-primary)]'
@@ -154,7 +151,7 @@ export function AurPanel({
                             </button>
                             <button
                                 onClick={() => setSelectedHelper('paru')}
-                                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all border
+                                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-[background-color,color,border-color] border
                                     ${selectedHelper === 'paru'
                                         ? 'bg-indigo-500/20 text-indigo-400 border-indigo-500/40'
                                         : 'bg-[var(--bg-tertiary)] text-[var(--text-muted)] border-[var(--border-primary)] hover:text-[var(--text-primary)]'

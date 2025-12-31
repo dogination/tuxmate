@@ -1,12 +1,6 @@
 'use client';
 
-/**
- * LoadingSkeleton - Placeholder UI while localStorage hydrates
- * 
- * Shows animated skeleton blocks mimicking the app grid layout.
- * Uses INLINE keyframe animation to ensure buttery smooth animation
- * from the very first render (before CSS is fully loaded/parsed).
- */
+// Skeleton UI while localStorage hydrates. Inline CSS for instant animation.
 export function LoadingSkeleton() {
     return (
         <>

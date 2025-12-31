@@ -2,20 +2,7 @@
 
 import { useState } from 'react';
 
-/**
- * DistroIcon - Distribution icon with fallback
- * 
- * Displays the distro's icon from URL, with graceful fallback
- * to the first letter of the distro name in a colored circle.
- * 
- * @param url - URL to the distro icon image
- * @param name - Name of the distro (used for fallback)
- * @param size - Icon size in pixels (default: 20)
- * 
- * @example
- * <DistroIcon url="/icons/ubuntu.svg" name="Ubuntu" />
- * <DistroIcon url="/icons/fedora.svg" name="Fedora" size={24} />
- */
+// Shows distro icon, falls back to first letter if image fails
 export function DistroIcon({ url, name, size = 20 }: { url: string; name: string; size?: number }) {
     const [error, setError] = useState(false);
 

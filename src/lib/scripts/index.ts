@@ -1,6 +1,4 @@
-/**
- * Script generator index - re-exports all distro generators
- */
+// Re-exports all distro script generators
 
 export { escapeShellString, getSelectedPackages, type PackageInfo } from './shared';
 export { generateUbuntuScript } from './ubuntu';

@@ -7,39 +7,7 @@ import { analytics } from '@/lib/analytics';
 import { isAurPackage } from '@/lib/aur';
 import { AppIcon } from './AppIcon';
 
-/**
- * AppItem - Individual app checkbox item (memoized for performance)
- * 
- * Features:
- * - Checkbox with selection state
- * - Unavailable state with info icon
- * - Tooltip on hover
- * - Focus state for keyboard navigation
- * - Analytics tracking
- * - Memoized to prevent unnecessary re-renders
- * 
- * @param app - App data object
- * @param isSelected - Whether the app is selected
- * @param isAvailable - Whether the app is available for the selected distro
- * @param isFocused - Whether the item has keyboard focus
- * @param selectedDistro - Currently selected distro ID
- * @param onToggle - Callback when app is toggled
- * @param onTooltipEnter - Callback for tooltip show
- * @param onTooltipLeave - Callback for tooltip hide
- * @param onFocus - Optional callback when item receives focus
- * 
- * @example
- * <AppItem
- *   app={appData}
- *   isSelected={selectedApps.has(appData.id)}
- *   isAvailable={isAppAvailable(appData.id)}
- *   isFocused={focusedId === appData.id}
- *   selectedDistro="ubuntu"
- *   onToggle={() => toggleApp(appData.id)}
- *   onTooltipEnter={showTooltip}
- *   onTooltipLeave={hideTooltip}
- * />
- */
+// Each app row in the list. Memoized because there are a LOT of these.
 
 interface AppItemProps {
     app: AppData;
@@ -64,12 +32,13 @@ export const AppItem = memo(function AppItem({
     onTooltipLeave,
     onFocus,
 }: AppItemProps) {
-    // Build unavailable tooltip text (just the reason, no description)
+    // Why isn't this app available? Tell the user.
     const getUnavailableText = () => {
         const distroName = distros.find(d => d.id === selectedDistro)?.name || '';
         return app.unavailableReason || `Not available in ${distroName} repos`;
     };
 
+    // Special styling for AUR packages (Arch users love their badges)
     const isAur = selectedDistro === 'arch' && app.targets?.arch && isAurPackage(app.targets.arch);
 
     return (
@@ -79,7 +48,7 @@ export const AppItem = memo(function AppItem({
             aria-checked={isSelected}
             aria-label={`${app.name}${!isAvailable ? ' (unavailable)' : ''}`}
             aria-disabled={!isAvailable}
-            className={`app-item w-full flex items-center gap-2.5 py-1.5 px-2 rounded-md outline-none transition-all duration-150
+            className={`app-item w-full flex items-center gap-2.5 py-1.5 px-2 rounded-md outline-none transition-colors duration-150
         ${isFocused ? 'bg-[var(--bg-focus)]' : ''}
         ${!isAvailable ? 'opacity-40 grayscale-[30%]' : 'hover:bg-[var(--bg-hover)] cursor-pointer'}`}
             style={{ transition: 'background-color 0.15s, color 0.5s' }}
@@ -105,7 +74,7 @@ export const AppItem = memo(function AppItem({
                 onTooltipLeave();
             }}
         >
-            <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all duration-150
+            <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors duration-150
         ${isAur
                     ? (isSelected ? 'bg-[#1793d1] border-[#1793d1]' : 'border-[#1793d1]/50')
                     : (isSelected ? 'bg-[var(--text-secondary)] border-[var(--text-secondary)]' : 'border-[var(--border-secondary)]')
@@ -142,7 +111,7 @@ export const AppItem = memo(function AppItem({
                     onMouseLeave={(e) => { e.stopPropagation(); onTooltipLeave(); }}
                 >
                     <svg
-                        className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--accent)] transition-all duration-300 hover:rotate-[360deg] hover:scale-110"
+                        className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--accent)] transition-[color,transform] duration-300 hover:rotate-[360deg] hover:scale-110"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"

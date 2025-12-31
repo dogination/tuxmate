@@ -1,6 +1,4 @@
-/**
- * Arch Linux script generator with AUR support
- */
+// Arch script - handles both pacman and AUR packages
 
 import { generateAsciiHeader, generateSharedUtils, escapeShellString, type PackageInfo } from './shared';
 import { isAurPackage } from '../aur';

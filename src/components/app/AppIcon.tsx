@@ -2,18 +2,7 @@
 
 import { useState } from 'react';
 
-/**
- * AppIcon - Application icon with lazy loading and fallback
- * 
- * Displays the app's icon from URL, with graceful fallback
- * to the first letter of the app name in a colored square.
- * 
- * @param url - URL to the app icon image
- * @param name - Name of the app (used for fallback)
- * 
- * @example
- * <AppIcon url="/icons/firefox.svg" name="Firefox" />
- */
+// App icon with lazy loading, falls back to first letter if it fails
 export function AppIcon({ url, name }: { url: string; name: string }) {
     const [error, setError] = useState(false);
 

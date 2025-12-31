@@ -1,10 +1,4 @@
-/**
- * Distro Components
- * 
- * Components related to Linux distribution selection:
- * - DistroIcon: Icon with fallback
- * - DistroSelector: Animated dropdown selector
- */
+// Distro picker components
 
 export { DistroIcon } from './DistroIcon';
 export { DistroSelector } from './DistroSelector';

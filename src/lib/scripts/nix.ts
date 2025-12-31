@@ -1,6 +1,4 @@
-/**
- * Nix script generator
- */
+// Nix script - nix-env
 
 import { generateAsciiHeader, generateSharedUtils, escapeShellString, type PackageInfo } from './shared';
 

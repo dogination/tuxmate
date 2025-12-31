@@ -1,11 +1,4 @@
-/**
- * Common Components
- * 
- * Shared, reusable components:
- * - Tooltip: Positioned tooltip with markdown formatting
- * - GlobalStyles: CSS keyframe animations
- * - LoadingSkeleton: Placeholder UI while hydrating
- */
+// Shared components - tooltip, animations, skeleton
 
 export { Tooltip, type TooltipData } from './Tooltip';
 export { GlobalStyles } from './GlobalStyles';

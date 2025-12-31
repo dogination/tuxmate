@@ -1,29 +1,9 @@
 'use client';
 
-/**
- * GlobalStyles - CSS keyframe animations for the app
- * 
- * Contains all animation keyframes used throughout the application.
- * Injected globally via styled-jsx.
- * 
- * Animations included:
- * - dropdownOpen: Scale and fade for dropdowns
- * - slideIn: Horizontal slide for items
- * - tooltipSlideUp: Tooltip reveal animation
- * - slideInFromBottom: Bottom-to-top slide
- * - fadeInScale: Fade with scale effect
- * - distroDropdownOpen: Bouncy dropdown open
- * - distroItemSlide: Bouncy item slide
- * - slideUp/slideDown: Drawer animations
- * - fadeIn/fadeOut: Backdrop fade
- * 
- * @example
- * // Place at the root of the app
- * <GlobalStyles />
- */
+// All the CSS keyframe animations in one place
 export function GlobalStyles() {
-    return (
-        <style jsx global>{`
+  return (
+    <style jsx global>{`
       @keyframes dropdownOpen {
         0% { opacity: 0; transform: scale(0.95) translateY(-8px); }
         100% { opacity: 1; transform: scale(1) translateY(0); }
@@ -129,5 +109,5 @@ export function GlobalStyles() {
         }
       }
     `}</style>
-    );
+  );
 }
