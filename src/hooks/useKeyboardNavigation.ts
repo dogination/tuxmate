@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { type Category } from '@/lib/data';
 
 // What we're navigating to
@@ -25,6 +25,12 @@ export function useKeyboardNavigation(
 ) {
     const [focusPos, setFocusPos] = useState<FocusPosition | null>(null);
 
+    // Track if focus was set via keyboard (to enable scroll) vs mouse (no scroll)
+    const fromKeyboard = useRef(false);
+
+    // Track if focus mode is keyboard (for UI highlighting)
+    const [isKeyboardNavigating, setIsKeyboardNavigating] = useState(false);
+
     /** Clear focus (e.g., when clicking outside) */
     const clearFocus = useCallback(() => setFocusPos(null), []);
 
@@ -34,12 +40,14 @@ export function useKeyboardNavigation(
         return navItems[focusPos.col]?.[focusPos.row] || null;
     }, [navItems, focusPos]);
 
-    /** Set focus position by item type and id */
+    /** Set focus position by item type and id (from mouse - no scroll) */
     const setFocusByItem = useCallback((type: 'category' | 'app', id: string) => {
         for (let col = 0; col < navItems.length; col++) {
             const colItems = navItems[col];
             for (let row = 0; row < colItems.length; row++) {
                 if (colItems[row].type === type && colItems[row].id === id) {
+                    fromKeyboard.current = false; // Mouse selection - don't scroll
+                    setIsKeyboardNavigating(false); // Disable focus ring
                     setFocusPos({ col, row });
                     return;
                 }
@@ -79,6 +87,10 @@ export function useKeyboardNavigation(
                 return;
             }
 
+            // Mark as keyboard navigation - will trigger scroll and focus ring
+            fromKeyboard.current = true;
+            setIsKeyboardNavigating(true);
+
             // Navigate
             setFocusPos(prev => {
                 if (!prev) return { col: 0, row: 0 };
@@ -117,16 +129,18 @@ export function useKeyboardNavigation(
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [navItems, focusPos, onToggleCategory, onToggleApp]);
 
-    /* Scroll focused item into view instantly */
+    /* Scroll focused item into view - only when navigating via keyboard */
     useEffect(() => {
-        if (!focusPos) return;
+        if (!focusPos || !fromKeyboard.current) return;
 
         const item = navItems[focusPos.col]?.[focusPos.row];
         if (!item) return;
 
-        const el = document.querySelector<HTMLElement>(
+        // Find visible element among duplicates (mobile/desktop layouts both render same data-nav-id)
+        const elements = document.querySelectorAll<HTMLElement>(
             `[data-nav-id="${item.type}:${item.id}"]`
         );
+        const el = Array.from(elements).find(e => e.offsetWidth > 0 && e.offsetHeight > 0);
 
         if (!el) return;
 
@@ -142,5 +156,6 @@ export function useKeyboardNavigation(
         focusedItem,
         clearFocus,
         setFocusByItem,
+        isKeyboardNavigating,
     };
 }

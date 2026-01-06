@@ -181,7 +181,13 @@ export function CommandDrawer({
                         <div className="p-4 font-mono text-sm overflow-x-auto">
                             <div className="flex gap-2">
                                 <span className="text-emerald-400 select-none shrink-0">$</span>
-                                <code className="text-gray-300 break-all whitespace-pre-wrap" style={{ lineHeight: '1.6' }}>
+                                <code
+                                    className="text-gray-300 break-all whitespace-pre-wrap"
+                                    style={{
+                                        lineHeight: '1.6',
+                                        fontFamily: 'var(--font-jetbrains-mono), monospace'
+                                    }}
+                                >
                                     {command}
                                 </code>
                             </div>

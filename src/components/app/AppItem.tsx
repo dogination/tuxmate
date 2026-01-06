@@ -66,13 +66,6 @@ export const AppItem = memo(function AppItem({
                     }
                 }
             }}
-            onMouseEnter={(e) => {
-                // Show description tooltip for all apps (available and unavailable)
-                onTooltipEnter(app.description, e);
-            }}
-            onMouseLeave={() => {
-                onTooltipLeave();
-            }}
         >
             <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors duration-150
         ${isAur
@@ -85,11 +78,21 @@ export const AppItem = memo(function AppItem({
             <AppIcon url={app.iconUrl} name={app.name} />
             <div className="flex-1 flex items-baseline gap-1.5 min-w-0 overflow-hidden">
                 <span
-                    className={`text-sm truncate ${!isAvailable ? 'text-[var(--text-muted)]' : isSelected ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}
+                    className={`truncate cursor-help ${!isAvailable ? 'text-[var(--text-muted)]' : isSelected ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}
                     style={{
+                        fontFamily: 'var(--font-open-sans), sans-serif',
+                        fontSize: '16px',
                         transition: 'color 0.5s',
                         textRendering: 'geometricPrecision',
                         WebkitFontSmoothing: 'antialiased'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.stopPropagation();
+                        onTooltipEnter(app.description, e);
+                    }}
+                    onMouseLeave={(e) => {
+                        e.stopPropagation();
+                        onTooltipLeave();
                     }}
                 >
                     {app.name}

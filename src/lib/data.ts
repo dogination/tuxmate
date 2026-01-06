@@ -255,11 +255,27 @@ export const apps: AppData[] = [
     { id: 'conky', name: 'Conky', description: 'Highly configurable desktop system monitor', category: 'System', iconUrl: mdi('monitor-dashboard', '#FFFFFF'), targets: { ubuntu: 'conky-all', debian: 'conky-all', arch: 'conky', fedora: 'conky', opensuse: 'conky', nix: 'conky' }, unavailableReason: 'Conky is a system tool and not available via Flatpak or Snap.' },
 ];
 
-// Categories in display order
+// Categories in display order - beginner-friendly (popular first), balanced heights
+// Popular/Consumer first, then Developer/Power-user categories
 export const categories: Category[] = [
-    'Web Browsers', 'Communication', 'Dev: Languages', 'Dev: Editors', 'Dev: Tools',
-    'Terminal', 'CLI Tools', 'Media', 'Creative', 'Gaming', 'Office',
-    'VPN & Network', 'Security', 'File Sharing', 'System'
+    // Row 1: Most popular consumer categories
+    'Web Browsers',    // 9  - everyone needs this first
+    'Communication',   // 8  - Discord, Telegram, etc.
+    'Media',           // 14 - VLC, Spotify, etc.
+    'Gaming',          // 10 - Steam, etc.
+    'Office',          // 11 - LibreOffice, etc.
+    // Row 2: Creative & System
+    'Creative',        // 10 - Blender, GIMP, etc.
+    'System',          // 13 - Utilities
+    'File Sharing',    // 9  - Syncthing, torrents
+    'Security',        // 6  - Passwords, VPN
+    'VPN & Network',   // 7  - ProtonVPN, etc.
+    // Row 3: Developer categories (larger, go last to fill columns)
+    'Dev: Editors',    // 9  - VS Code, etc.
+    'Dev: Languages',  // 10 - Python, Node, etc.
+    'Dev: Tools',      // 18 - Docker, Git, etc.
+    'Terminal',        // 9  - Alacritty, etc.
+    'CLI Tools',       // 21 - btop, fzf, etc.
 ];
 
 // Get apps by category

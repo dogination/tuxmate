@@ -53,7 +53,7 @@ export function ShortcutsBar({
                             onKeyDown={handleKeyDown}
                             placeholder="search..."
                             className="
-                                    w-20 sm:w-28
+                                    w-28 sm:w-40
                                     bg-transparent
                                     text-[var(--text-primary)]
                                     placeholder:text-[var(--text-muted)]/50

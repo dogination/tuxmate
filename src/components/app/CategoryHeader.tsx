@@ -48,9 +48,9 @@ export function CategoryHeader({
             aria-expanded={isExpanded}
             aria-label={`${category} category, ${selectedCount} apps selected`}
             // Soft Pill design: rounded tags with accent color
-            className={`category-header group w-full flex items-center gap-2 text-xs font-bold text-[var(--accent)] 
+            className={`category-header group w-full h-7 flex items-center gap-2 text-xs font-bold text-[var(--accent)] 
         bg-[var(--accent)]/10 hover:bg-[var(--accent)]/20
-        uppercase tracking-wider py-1 px-3 rounded-lg mb-3
+        uppercase tracking-wider px-3 rounded-lg mb-3
         transition-all duration-200 outline-none
         ${isFocused ? 'bg-[var(--accent)]/25 shadow-sm' : ''}`}
         >
@@ -62,10 +62,10 @@ export function CategoryHeader({
             <span className="flex-1 text-left">{category}</span>
             {selectedCount > 0 && (
                 <span
-                    className="text-[10px] bg-[var(--accent)]/10 text-[var(--accent)] w-5 h-5 rounded-full flex items-center justify-center font-bold"
-                    style={{ transition: 'background-color 0.5s, color 0.5s' }}
+                    className="text-xs text-[var(--accent)] font-bold ml-1.5 opacity-100"
+                    style={{ transition: 'color 0.5s' }}
                 >
-                    {selectedCount}
+                    [{selectedCount}]
                 </span>
             )}
         </button>

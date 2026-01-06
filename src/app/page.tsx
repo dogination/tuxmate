@@ -5,7 +5,7 @@ import gsap from 'gsap';
 
 // Hooks
 import { useLinuxInit } from '@/hooks/useLinuxInit';
-import { useDelayedTooltip } from '@/hooks/useDelayedTooltip';
+import { useTooltip } from '@/hooks/useTooltip';
 import { useKeyboardNavigation, type NavItem } from '@/hooks/useKeyboardNavigation';
 
 // Data
@@ -24,7 +24,7 @@ import { Tooltip, GlobalStyles, LoadingSkeleton } from '@/components/common';
 export default function Home() {
     // All the state we need to make this thing work
 
-    const { tooltip, show: showTooltip, hide: hideTooltip, onTooltipEnter, onTooltipLeave } = useDelayedTooltip(600);
+    const { tooltip, show: showTooltip, hide: hideTooltip, tooltipMouseEnter, tooltipMouseLeave } = useTooltip();
 
     const {
         selectedDistro,
@@ -89,15 +89,17 @@ export default function Home() {
     // 5 columns looks good on most screens
     const COLUMN_COUNT = 5;
 
-    // Tetris-style packing: shortest column gets the next category
+    // Pack categories into shortest column while preserving order
     const columns = useMemo(() => {
         const cols: Array<typeof allCategoriesWithApps> = Array.from({ length: COLUMN_COUNT }, () => []);
         const heights = Array(COLUMN_COUNT).fill(0);
+
         allCategoriesWithApps.forEach(catData => {
             const minIdx = heights.indexOf(Math.min(...heights));
             cols[minIdx].push(catData);
             heights[minIdx] += catData.apps.length + 2;
         });
+
         return cols;
     }, [allCategoriesWithApps]);
 
@@ -110,7 +112,11 @@ export default function Home() {
     const toggleCategoryExpanded = useCallback((cat: string) => {
         setExpandedCategories(prev => {
             const next = new Set(prev);
-            next.has(cat) ? next.delete(cat) : next.add(cat);
+            if (next.has(cat)) {
+                next.delete(cat);
+            } else {
+                next.add(cat);
+            }
             return next;
         });
     }, []);
@@ -132,7 +138,7 @@ export default function Home() {
         return items;
     }, [columns, expandedCategories]);
 
-    const { focusedItem, clearFocus, setFocusByItem } = useKeyboardNavigation(
+    const { focusedItem, clearFocus, setFocusByItem, isKeyboardNavigating } = useKeyboardNavigation(
         navItems,
         toggleCategoryExpanded,
         toggleApp
@@ -197,7 +203,7 @@ export default function Home() {
             onClick={clearFocus}
         >
             <GlobalStyles />
-            <Tooltip tooltip={tooltip} onEnter={onTooltipEnter} onLeave={onTooltipLeave} />
+            <Tooltip tooltip={tooltip} onMouseEnter={tooltipMouseEnter} onMouseLeave={tooltipMouseLeave} />
 
             {/* Header */}
             <header ref={headerRef} className="pt-8 sm:pt-12 pb-8 sm:pb-10 px-4 sm:px-6 relative" style={{ zIndex: 1 }}>
@@ -206,6 +212,7 @@ export default function Home() {
                         {/* Logo & Title */}
                         <div className="header-animate">
                             <div className="flex items-center gap-4">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
                                     src="/tuxmate.png"
                                     alt="TuxMate Logo"
@@ -256,7 +263,7 @@ export default function Home() {
                     {/* Mobile: 2-column grid with balanced distribution */}
                     <div className="grid grid-cols-2 gap-x-4 md:hidden items-start">
                         {(() => {
-                            // Tetris packing for 2 columns on mobile
+                            // Pack into 2 columns on mobile
                             const mobileColumns: Array<typeof allCategoriesWithApps> = [[], []];
                             const heights = [0, 0];
                             allCategoriesWithApps.forEach(catData => {
@@ -277,8 +284,8 @@ export default function Home() {
                                             toggleApp={toggleApp}
                                             isExpanded={expandedCategories.has(category)}
                                             onToggleExpanded={() => toggleCategoryExpanded(category)}
-                                            focusedId={focusedItem?.id}
-                                            focusedType={focusedItem?.type}
+                                            focusedId={isKeyboardNavigating ? focusedItem?.id : undefined}
+                                            focusedType={isKeyboardNavigating ? focusedItem?.type : undefined}
                                             onTooltipEnter={showTooltip}
                                             onTooltipLeave={hideTooltip}
                                             categoryIndex={catIdx}
@@ -316,8 +323,8 @@ export default function Home() {
                                             toggleApp={toggleApp}
                                             isExpanded={expandedCategories.has(category)}
                                             onToggleExpanded={() => toggleCategoryExpanded(category)}
-                                            focusedId={focusedItem?.id}
-                                            focusedType={focusedItem?.type}
+                                            focusedId={isKeyboardNavigating ? focusedItem?.id : undefined}
+                                            focusedType={isKeyboardNavigating ? focusedItem?.type : undefined}
                                             onTooltipEnter={showTooltip}
                                             onTooltipLeave={hideTooltip}
                                             categoryIndex={globalIdx + catIdx}

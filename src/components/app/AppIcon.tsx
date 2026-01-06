@@ -8,7 +8,7 @@ export function AppIcon({ url, name }: { url: string; name: string }) {
 
     if (error) {
         return (
-            <div className="w-4 h-4 rounded bg-[var(--accent)] flex items-center justify-center text-[10px] font-bold">
+            <div className="w-[18px] h-[18px] rounded bg-[var(--accent)] flex items-center justify-center text-[10px] font-bold">
                 {name[0]}
             </div>
         );
@@ -22,7 +22,7 @@ export function AppIcon({ url, name }: { url: string; name: string }) {
             aria-hidden="true"
             width={16}
             height={16}
-            className="w-4 h-4 object-contain opacity-75"
+            className="w-[18px] h-[18px] object-contain opacity-75"
             onError={() => setError(true)}
             loading="lazy"
         />
