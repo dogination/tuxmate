@@ -22,7 +22,7 @@ Maybe you've just installed a fresh Linux distro. Perhaps you're setting up
 a new machine or can't remember all the package names for your favorite apps?
 
 
-## 📦 Supported Distributions
+## 📦 Supported Package Managers
 
 - Ubuntu / Debian (apt)
 - Arch Linux (pacman + AUR)
@@ -31,6 +31,7 @@ a new machine or can't remember all the package names for your favorite apps?
 - Nix (nix-env)
 - Flatpak
 - Snap
+- Homebrew (macOS + Linux)
 
 ## ✨ Features 🌟
 
@@ -40,6 +41,7 @@ a new machine or can't remember all the package names for your favorite apps?
 ### **Smart Script Generation**  
 - Detects already-installed packages
 - Handles AUR packages automatically on Arch
+- Homebrew formula/cask separation for macOS
 - Parallel installation for Flatpak
 - Network retry with exponential backoff
 - Progress bars with ETA
@@ -236,13 +238,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 - [x] AUR Helper selection (yay/paru) + Auto-detection
 - [x] Keyboard navigation (Vim keys, Arrows, Space, Esc, Enter)
 - [x] Package availability indicators (including AUR badges)
+- [x] Homebrew support (macOS + Linux)
 
 
 
 ### Planned
 
 - [ ] Winget support (Windows)
-- [ ] Homebrew support (macOS)
 - [ ] Save custom presets / profiles
 - [ ] Share configurations via URL
 - [ ] More distros (Gentoo, Void, Alpine)
