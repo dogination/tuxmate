@@ -26,6 +26,25 @@ interface CategorySectionProps {
     onAppFocus?: (appId: string) => void;
 }
 
+// Category color mapping
+const categoryColors: Record<Category, string> = {
+    'Web Browsers': 'orange',
+    'Communication': 'blue',
+    'Media': 'yellow',
+    'Gaming': 'purple',
+    'Office': 'indigo',
+    'Creative': 'cyan',
+    'System': 'red',
+    'File Sharing': 'teal',
+    'Security': 'green',
+    'VPN & Network': 'emerald',
+    'Dev: Editors': 'sky',
+    'Dev: Languages': 'rose',
+    'Dev: Tools': 'slate',
+    'Terminal': 'zinc',
+    'CLI Tools': 'gray'
+};
+
 function CategorySectionComponent({
     category,
     categoryApps,
@@ -49,7 +68,10 @@ function CategorySectionComponent({
     const hasAnimated = useRef(false);
     const prevAppCount = useRef(categoryApps.length);
 
-    // Initial entrance animation - GPU optimized
+    // Get color for this category
+    const color = categoryColors[category] || 'gray';
+
+    // Initial entrance animation
     useLayoutEffect(() => {
         if (!sectionRef.current || hasAnimated.current) return;
         hasAnimated.current = true;
@@ -114,6 +136,7 @@ function CategorySectionComponent({
                 }}
                 selectedCount={selectedInCategory}
                 onFocus={onCategoryFocus}
+                color={color}
             />
             <div
                 className={`overflow-hidden transition-[max-height,opacity] duration-500 ${isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}
@@ -131,6 +154,7 @@ function CategorySectionComponent({
                         onTooltipEnter={onTooltipEnter}
                         onTooltipLeave={onTooltipLeave}
                         onFocus={() => onAppFocus?.(app.id)}
+                        color={color}
                     />
                 ))}
             </div>

@@ -66,23 +66,25 @@ export function Tooltip({ tooltip, onMouseEnter, onMouseLeave, setRef }: Tooltip
             ref={setRef}
             role="tooltip"
             className="fixed hidden md:block pointer-events-auto z-[9999]"
-            style={{ left: current.x, top: current.y - 10 }}
+            style={{ left: current.x, top: current.y - 12 }} // Moved up slightly to clear cursor
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
             <div className={`
-                absolute left-1/2 bottom-0 -translate-x-1/2
+                absolute left-0 bottom-0
                 transition-opacity duration-75
                 ${visible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
             `}>
-                {/* Clean tooltip bubble */}
+                {/* AccessGuide-style tooltip - rectangular with left border accent */}
                 <div
-                    className="px-3.5 py-2.5 rounded-lg shadow-lg overflow-hidden"
+                    className="px-3.5 py-2.5 shadow-lg overflow-hidden border-l-4 relative"
                     style={{
                         minWidth: '300px',
                         maxWidth: '300px',
                         backgroundColor: 'var(--bg-secondary)',
-                        border: '1px solid var(--border-primary)',
+                        borderLeftColor: 'var(--accent)',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+                        transform: 'translateX(-22px)', // Shift tooltip so arrow aligns with mouse (arrow is at left: 16px + half width)
                     }}
                 >
                     <p className="text-[13px] leading-[1.55] text-[var(--text-secondary)] break-words" style={{ wordBreak: 'break-word' }}>
@@ -90,14 +92,14 @@ export function Tooltip({ tooltip, onMouseEnter, onMouseLeave, setRef }: Tooltip
                     </p>
                 </div>
 
-                {/* Arrow */}
-                <div className="absolute left-1/2 -translate-x-1/2 -bottom-[5px]">
+                {/* Arrow aligned to mouse position */}
+                {/* Arrow at left: 16px matches the visual design, so we shift wrapper -22px to align 16px + 6px(half arrow) approx to 0 */}
+                <div className="absolute left-0 -bottom-[6px]" style={{ transform: 'translateX(-6px)' }}>
                     <div
-                        className="w-2.5 h-2.5 rotate-45"
+                        className="w-3 h-3 rotate-45"
                         style={{
                             backgroundColor: 'var(--bg-secondary)',
-                            borderRight: '1px solid var(--border-primary)',
-                            borderBottom: '1px solid var(--border-primary)',
+                            boxShadow: '2px 2px 4px rgba(0,0,0,0.15)',
                         }}
                     />
                 </div>

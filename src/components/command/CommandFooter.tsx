@@ -79,6 +79,7 @@ export function CommandFooter({
 
     const showAur = selectedDistro === 'arch' && hasAurPackages;
     const distroDisplayName = distros.find(d => d.id === selectedDistro)?.name || selectedDistro;
+    const distroColor = distros.find(d => d.id === selectedDistro)?.color || 'var(--accent)';
 
     const handleCopy = useCallback(async () => {
         if (selectedCount === 0) return;
@@ -174,6 +175,7 @@ export function CommandFooter({
                 setHasYayInstalled={setHasYayInstalled}
                 selectedHelper={selectedHelper}
                 setSelectedHelper={setSelectedHelper}
+                distroColor={distroColor}
             />
 
             {/* Animated footer container - only shows after first selection */}
@@ -205,23 +207,39 @@ export function CommandFooter({
                                 searchInputRef={searchInputRef}
                                 selectedCount={selectedCount}
                                 distroName={distroDisplayName}
+                                distroColor={distroColor}
                                 showAur={showAur}
                                 selectedHelper={selectedHelper}
                                 setSelectedHelper={setSelectedHelper}
                             />
 
-                            {/* Command Bar */}
-                            <div className="bg-[var(--bg-tertiary)] font-mono text-xs rounded-lg overflow-hidden border border-[var(--border-primary)]/40 shadow-2xl">
+                            {/* Command Bar - AccessGuide style */}
+                            <div className="bg-[var(--bg-tertiary)] font-mono text-xs overflow-hidden border-l-4 shadow-2xl"
+                                style={{ borderLeftColor: distroColor }}>
                                 <div className="flex items-stretch">
                                     {/* Preview button (hidden on mobile) */}
                                     <button
                                         onClick={() => selectedCount > 0 && setDrawerOpen(true)}
                                         disabled={selectedCount === 0}
-                                        className={`hidden md:flex items-center gap-2 px-4 py-3 border-r border-[var(--border-primary)]/30 transition-colors shrink-0 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 hover:text-indigo-300 ${selectedCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        className={`hidden md:flex items-center gap-2 px-5 py-3 border-r border-[var(--border-primary)]/20 transition-all shrink-0 font-medium ${selectedCount === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
                                         title="Toggle Preview (Tab)"
+                                        style={{
+                                            backgroundColor: selectedCount > 0 ? `color-mix(in srgb, ${distroColor}, transparent 90%)` : undefined,
+                                            color: selectedCount > 0 ? distroColor : undefined,
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            if (selectedCount > 0) {
+                                                e.currentTarget.style.backgroundColor = `color-mix(in srgb, ${distroColor}, transparent 80%)`;
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (selectedCount > 0) {
+                                                e.currentTarget.style.backgroundColor = `color-mix(in srgb, ${distroColor}, transparent 90%)`;
+                                            }
+                                        }}
                                     >
                                         <ChevronUp className="w-3.5 h-3.5 shrink-0" />
-                                        <span className="font-bold whitespace-nowrap">PREVIEW</span>
+                                        <span className="whitespace-nowrap text-xs uppercase tracking-wider">Preview</span>
                                         {selectedCount > 0 && (
                                             <span className="text-[10px] opacity-60 ml-0.5 whitespace-nowrap">[{selectedCount}]</span>
                                         )}
@@ -232,7 +250,7 @@ export function CommandFooter({
                                         className="flex-1 min-w-0 flex items-center justify-center px-4 py-4 overflow-hidden bg-[var(--bg-secondary)] cursor-pointer hover:bg-[var(--bg-hover)] transition-colors group"
                                         onClick={() => selectedCount > 0 && setDrawerOpen(true)}
                                     >
-                                        <code className={`whitespace-nowrap overflow-x-auto command-scroll leading-none ${selectedCount > 0 ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
+                                        <code className={`whitespace-nowrap overflow-x-auto command-scroll leading-none text-sm font-semibold ${selectedCount > 0 ? 'text-[var(--text-primary)]' : 'text-[var(--text-muted)]'}`}>
                                             {command}
                                         </code>
                                     </div>
@@ -241,13 +259,23 @@ export function CommandFooter({
                                     <button
                                         onClick={clearAll}
                                         disabled={selectedCount === 0}
-                                        className={`hidden md:flex items-center gap-1.5 px-3 py-3 border-l border-[var(--border-primary)]/30 transition-all duration-150 font-sans text-sm font-medium ${selectedCount > 0
-                                            ? 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] active:scale-[0.97]'
+                                        className={`hidden md:flex items-center gap-2 px-4 py-3 border-l border-[var(--border-primary)]/20 transition-all duration-150 font-sans text-sm ${selectedCount > 0
+                                            ? 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] active:scale-[0.97]'
                                             : 'text-[var(--text-muted)] opacity-50 cursor-not-allowed'
                                             }`}
                                         title="Clear All (c)"
+                                        onMouseEnter={(e) => {
+                                            if (selectedCount > 0) {
+                                                e.currentTarget.style.backgroundColor = `color-mix(in srgb, ${distroColor}, transparent 95%)`;
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (selectedCount > 0) {
+                                                e.currentTarget.style.backgroundColor = '';
+                                            }
+                                        }}
                                     >
-                                        <X className="w-3.5 h-3.5 shrink-0" />
+                                        <X className="w-4 h-4 shrink-0 opacity-70" />
                                         <span className="hidden sm:inline whitespace-nowrap">Clear</span>
                                     </button>
 
@@ -255,13 +283,23 @@ export function CommandFooter({
                                     <button
                                         onClick={handleDownload}
                                         disabled={selectedCount === 0}
-                                        className={`hidden md:flex items-center gap-1.5 px-3 py-3 border-l border-[var(--border-primary)]/30 transition-all duration-150 font-sans text-sm font-medium ${selectedCount > 0
-                                            ? 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] active:scale-[0.97]'
+                                        className={`hidden md:flex items-center gap-2 px-4 py-3 border-l border-[var(--border-primary)]/20 transition-all duration-150 font-sans text-sm ${selectedCount > 0
+                                            ? 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] active:scale-[0.97]'
                                             : 'text-[var(--text-muted)] opacity-50 cursor-not-allowed'
                                             }`}
                                         title="Download Script (d)"
+                                        onMouseEnter={(e) => {
+                                            if (selectedCount > 0) {
+                                                e.currentTarget.style.backgroundColor = `color-mix(in srgb, ${distroColor}, transparent 95%)`;
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (selectedCount > 0) {
+                                                e.currentTarget.style.backgroundColor = '';
+                                            }
+                                        }}
                                     >
-                                        <Download className="w-3.5 h-3.5 shrink-0" />
+                                        <Download className="w-4 h-4 shrink-0 opacity-70" />
                                         <span className="hidden sm:inline whitespace-nowrap">Download</span>
                                     </button>
 
@@ -269,15 +307,25 @@ export function CommandFooter({
                                     <button
                                         onClick={handleCopy}
                                         disabled={selectedCount === 0}
-                                        className={`hidden md:flex items-center gap-1.5 px-3 py-3 border-l border-[var(--border-primary)]/30 transition-all duration-150 font-sans text-sm font-medium ${selectedCount > 0
+                                        className={`hidden md:flex items-center gap-2 px-4 py-3 border-l border-[var(--border-primary)]/20 transition-all duration-150 font-sans text-sm ${selectedCount > 0
                                             ? (copied
-                                                ? 'text-emerald-400'
-                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-hover)] active:scale-[0.97]')
+                                                ? 'text-emerald-400 font-medium'
+                                                : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] active:scale-[0.97]')
                                             : 'text-[var(--text-muted)] opacity-50 cursor-not-allowed'
                                             }`}
                                         title="Copy Command (y)"
+                                        onMouseEnter={(e) => {
+                                            if (selectedCount > 0 && !copied) {
+                                                e.currentTarget.style.backgroundColor = `color-mix(in srgb, ${distroColor}, transparent 95%)`;
+                                            }
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            if (selectedCount > 0 && !copied) {
+                                                e.currentTarget.style.backgroundColor = '';
+                                            }
+                                        }}
                                     >
-                                        {copied ? <Check className="w-3.5 h-3.5 shrink-0" /> : <Copy className="w-3.5 h-3.5 shrink-0" />}
+                                        {copied ? <Check className="w-4 h-4 shrink-0" /> : <Copy className="w-4 h-4 shrink-0 opacity-70" />}
                                         <span className="hidden sm:inline whitespace-nowrap">{copied ? 'Copied!' : 'Copy'}</span>
                                     </button>
                                 </div>

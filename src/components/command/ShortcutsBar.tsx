@@ -8,6 +8,7 @@ interface ShortcutsBarProps {
     searchInputRef: React.RefObject<HTMLInputElement | null>;
     selectedCount: number;
     distroName: string;
+    distroColor: string;
     showAur: boolean;
     selectedHelper: 'yay' | 'paru';
     setSelectedHelper: (helper: 'yay' | 'paru') => void;
@@ -20,6 +21,7 @@ export function ShortcutsBar({
     searchInputRef,
     selectedCount,
     distroName,
+    distroColor,
     showAur,
     selectedHelper,
     setSelectedHelper,
@@ -33,12 +35,16 @@ export function ShortcutsBar({
     };
 
     return (
-        <div className="bg-[var(--bg-tertiary)] border border-[var(--border-primary)] font-mono text-xs rounded-lg overflow-hidden">
+        <div className="bg-[var(--bg-tertiary)] border-l-4 font-mono text-xs overflow-hidden"
+            style={{ borderLeftColor: distroColor }}>
             <div className="flex items-stretch justify-between">
                 {/* LEFT SECTION */}
                 <div className="flex items-stretch">
                     {/* Mode Badge - like nvim NORMAL/INSERT (hidden on mobile) */}
-                    <div className="hidden md:flex bg-[var(--text-primary)] text-[var(--bg-primary)] px-3 py-1 font-bold items-center whitespace-nowrap">
+                    <div
+                        className="hidden md:flex text-white px-3 py-1 font-bold items-center whitespace-nowrap"
+                        style={{ backgroundColor: distroColor }}
+                    >
                         {distroName.toUpperCase()}
                     </div>
 
@@ -115,7 +121,10 @@ export function ShortcutsBar({
                     </div>
 
                     {/* End badge - like nvim line:col */}
-                    <div className="bg-[var(--text-primary)] text-[var(--bg-primary)] px-3 py-1 flex items-center font-bold text-xs tracking-wider">
+                    <div
+                        className="text-white px-3 py-1 flex items-center font-bold text-xs tracking-wider"
+                        style={{ backgroundColor: distroColor }}
+                    >
                         TUX
                     </div>
                 </div>

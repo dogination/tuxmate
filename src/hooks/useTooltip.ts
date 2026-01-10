@@ -54,11 +54,12 @@ export function useTooltip() {
         cancel();
 
         const rect = target.getBoundingClientRect();
+        const clientX = e.clientX; // Capture mouse X position
 
         showTimeout.current = setTimeout(() => {
             setTooltip({
                 content,
-                x: rect.left + rect.width / 2,
+                x: clientX, // Use mouse X instead of element center
                 y: rect.top,
             });
         }, 450);

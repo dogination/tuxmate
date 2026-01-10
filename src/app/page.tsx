@@ -19,10 +19,7 @@ import { CategorySection } from '@/components/app';
 import { CommandFooter } from '@/components/command';
 import { Tooltip, GlobalStyles, LoadingSkeleton } from '@/components/common';
 
-// The main event
-
 export default function Home() {
-    // All the state we need to make this thing work
 
     const { tooltip, show: showTooltip, hide: hideTooltip, tooltipMouseEnter, tooltipMouseLeave, setTooltipRef } = useTooltip();
 
@@ -122,7 +119,7 @@ export default function Home() {
     }, []);
 
 
-    // Build nav items for keyboard navigation (vim keys ftw)
+    // Build nav items for keyboard navigation
     const navItems = useMemo(() => {
         const items: NavItem[][] = [];
         columns.forEach((colCategories) => {

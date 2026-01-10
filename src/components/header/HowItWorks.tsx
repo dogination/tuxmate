@@ -86,17 +86,18 @@ export function HowItWorks() {
                 }}
             />
 
-            {/* Modal */}
+            {/* Modal - AccessGuide style: rectangular with left border accent */}
             <div
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="how-it-works-title"
-                className="fixed bg-[var(--bg-secondary)] border border-[var(--border-primary)] z-[99999]"
+                className="fixed bg-[var(--bg-primary)] border-l-4 z-[99999]"
                 style={{
                     top: '50%',
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    borderRadius: '16px',
+                    borderRadius: '0 4px 4px 0',
+                    borderLeftColor: 'var(--accent)',
                     width: '620px',
                     maxWidth: 'calc(100vw - 32px)',
                     maxHeight: 'min(85vh, 720px)',
@@ -106,17 +107,17 @@ export function HowItWorks() {
                         ? 'modalSlideOut 0.2s ease-out forwards'
                         : 'modalSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
                     overflow: 'hidden',
-                    boxShadow: '0 16px 48px -8px rgba(0, 0, 0, 0.2)',
+                    boxShadow: '0 16px 48px -8px rgba(0, 0, 0, 0.25)',
                 }}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border-primary)]">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border-secondary)]">
                     <h3 id="how-it-works-title" className="text-base font-semibold text-[var(--text-primary)]">
                         Help
                     </h3>
                     <button
                         onClick={handleClose}
-                        className="p-1.5 -mr-1 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                        className="p-1.5 -mr-1 hover:bg-[var(--bg-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                     >
                         <X className="w-4 h-4" />
                     </button>
@@ -125,9 +126,9 @@ export function HowItWorks() {
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6" style={{ scrollbarGutter: 'stable' }}>
 
-                    {/* Shortcuts */}
+                    {/* Shortcuts - AccessGuide style */}
                     <section>
-                        <h4 className="text-sm font-medium text-[var(--text-primary)] mb-4">Keyboard Shortcuts</h4>
+                        <h4 className="text-sm font-medium text-[var(--text-primary)] mb-4 pl-3 border-l-2 border-[var(--accent)]">Keyboard Shortcuts</h4>
                         <div className="grid grid-cols-2 gap-x-8 gap-y-2">
                             {[
                                 ['↑↓←→', 'Navigate through apps'],
@@ -144,7 +145,7 @@ export function HowItWorks() {
                                 ['1 / 2', 'Switch AUR helper (yay/paru)'],
                             ].map(([key, desc]) => (
                                 <div key={key} className="flex items-center gap-3 text-sm">
-                                    <kbd className="inline-flex items-center justify-center min-w-[52px] px-2 py-1 rounded-md bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-xs font-mono text-[var(--text-secondary)]">
+                                    <kbd className="inline-flex items-center justify-center min-w-[52px] px-2 py-1 bg-[var(--bg-secondary)] border-l-2 border-[var(--accent)] text-xs font-mono text-[var(--text-secondary)]">
                                         {key}
                                     </kbd>
                                     <span className="text-[var(--text-muted)]">{desc}</span>
@@ -153,9 +154,9 @@ export function HowItWorks() {
                         </div>
                     </section>
 
-                    {/* Getting Started */}
+                    {/* Getting Started - AccessGuide style */}
                     <section>
-                        <h4 className="text-sm font-medium text-[var(--text-primary)] mb-3">Getting Started</h4>
+                        <h4 className="text-sm font-medium text-[var(--text-primary)] mb-3 pl-3 border-l-2 border-[var(--accent)]">Getting Started</h4>
                         <ol className="space-y-2 text-sm text-[var(--text-muted)] leading-relaxed">
                             <li>
                                 <strong className="text-[var(--text-secondary)]">1. Pick your distro</strong> — Select your Linux distribution from the dropdown at the top. This determines which package manager commands TuxMate generates for you.
@@ -172,9 +173,9 @@ export function HowItWorks() {
                         </ol>
                     </section>
 
-                    {/* Notes */}
+                    {/* Notes - AccessGuide style */}
                     <section>
-                        <h4 className="text-sm font-medium text-[var(--text-primary)] mb-3">Good to Know</h4>
+                        <h4 className="text-sm font-medium text-[var(--text-primary)] mb-3 pl-3 border-l-2 border-[var(--accent)]">Good to Know</h4>
                         <ul className="space-y-2 text-sm text-[var(--text-muted)] leading-relaxed">
                             <li>
                                 <strong className="text-[var(--text-secondary)]">Greyed out apps</strong> aren&apos;t available in your distro&apos;s official repositories. Try switching to Flatpak or Snap in the dropdown, or hover the info icon next to the app for alternative installation methods.
@@ -189,7 +190,7 @@ export function HowItWorks() {
                                 <strong className="text-[var(--text-secondary)]">Auto-save</strong> — Your app selections are saved automatically in your browser. Come back anytime and your selections will still be there.
                             </li>
                             <li>
-                                <strong className="text-[var(--text-secondary)]">Script Safety</strong> — Downloaded scripts are robust and idempotent. They include error handling, network retries, and system checks. Run them with <code className="px-1 py-0.5 rounded bg-[var(--bg-tertiary)] text-xs font-mono">bash tuxmate-*.sh</code> to safely install your selection.
+                                <strong className="text-[var(--text-secondary)]">Script Safety</strong> — Downloaded scripts are robust and idempotent. They include error handling, network retries, and system checks. Run them with <code className="px-1 py-0.5 bg-[var(--bg-secondary)] border-l-2 border-[var(--accent)] text-xs font-mono">bash tuxmate-*.sh</code> to safely install your selection.
                             </li>
                         </ul>
                     </section>

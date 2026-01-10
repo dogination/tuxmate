@@ -3,17 +3,17 @@
 /* ===== WARM PAPER AESTHETIC THEMES ===== */
 
 :root {
-    /* Dark theme - warm charcoal with paper undertones */
-    --bg-primary: #1e1d1a;
-    --bg-secondary: #262520;
-    --bg-tertiary: #302f29;
-    --bg-hover: #3a3832;
-    --bg-focus: #454339;
+    /* Dark theme - lighter warm charcoal per user request */
+    --bg-primary: #262522;
+    --bg-secondary: #2f2e2a;
+    --bg-tertiary: #3a3934;
+    --bg-hover: #45433d;
+    --bg-focus: #504e46;
     --text-primary: #f5f3ef;
     --text-secondary: #d8d4cc;
     --text-muted: #a09a8e;
-    --border-primary: #3a3832;
-    --border-secondary: #454339;
+    --border-primary: #45433d;
+    --border-secondary: #504e46;
     --accent: #9a958a;
 }
 
@@ -35,18 +35,29 @@
 @theme inline {
     --color-background: var(--bg-primary);
     --color-foreground: var(--text-primary);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
+    --font-sans: var(--font-sans);
+    --font-heading: var(--font-heading);
+    --font-mono: var(--font-mono);
 }
 
 body {
     background: var(--bg-primary);
     color: var(--text-primary);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
     font-weight: 450;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transition: background 0.3s ease, color 0.3s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.category-header {
+    font-family: var(--font-heading), system-ui, -apple-system, sans-serif;
 }
 
 body::before {
@@ -83,6 +94,7 @@ body::before {
 
 html {
     scroll-behavior: smooth;
+    font-family: var(--font-sans);
 }
 
 ::selection {

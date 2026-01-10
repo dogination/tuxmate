@@ -9,6 +9,25 @@ import { AppIcon } from './AppIcon';
 
 // Each app row in the list. Memoized because there are a LOT of these.
 
+// Basic Tailwind-ish color palette for mapping
+const COLOR_MAP: Record<string, string> = {
+    'orange': '#f97316',
+    'blue': '#3b82f6',
+    'emerald': '#10b981',
+    'sky': '#0ea5e9',
+    'yellow': '#eab308',
+    'slate': '#64748b',
+    'zinc': '#71717a',
+    'rose': '#f43f5e',
+    'purple': '#a855f7',
+    'red': '#ef4444',
+    'indigo': '#6366f1',
+    'cyan': '#06b6d4',
+    'green': '#22c55e',
+    'teal': '#14b8a6',
+    'gray': '#6b7280',
+};
+
 interface AppItemProps {
     app: AppData;
     isSelected: boolean;
@@ -19,6 +38,7 @@ interface AppItemProps {
     onTooltipEnter: (t: string, e: React.MouseEvent) => void;
     onTooltipLeave: () => void;
     onFocus?: () => void;
+    color?: string;
 }
 
 export const AppItem = memo(function AppItem({
@@ -31,6 +51,7 @@ export const AppItem = memo(function AppItem({
     onTooltipEnter,
     onTooltipLeave,
     onFocus,
+    color = 'gray',
 }: AppItemProps) {
     // Why isn't this app available? Tell the user.
     const getUnavailableText = () => {
@@ -41,6 +62,11 @@ export const AppItem = memo(function AppItem({
     // Special styling for AUR packages (Arch users love their badges)
     const isAur = selectedDistro === 'arch' && app.targets?.arch && isAurPackage(app.targets.arch);
 
+    // Determine effective color (AUR overrides category color for the checkbox/badge, but maybe not the row border)
+    // Actually, let's keep the row border as the category color for consistency
+    const hexColor = COLOR_MAP[color] || COLOR_MAP['gray'];
+    const checkboxColor = isAur ? '#1793d1' : hexColor;
+
     return (
         <div
             data-nav-id={`app:${app.id}`}
@@ -48,33 +74,35 @@ export const AppItem = memo(function AppItem({
             aria-checked={isSelected}
             aria-label={`${app.name}${!isAvailable ? ' (unavailable)' : ''}`}
             aria-disabled={!isAvailable}
-            className={`app-item w-full flex items-center gap-2.5 py-1.5 px-2 rounded-md outline-none transition-colors duration-150
-        ${isFocused ? 'bg-[var(--bg-focus)]' : ''}
-        ${!isAvailable ? 'opacity-40 grayscale-[30%]' : 'hover:bg-[var(--bg-hover)] cursor-pointer'}`}
-            style={{ transition: 'background-color 0.15s, color 0.5s' }}
+            className={`app-item group w-full flex items-center gap-2.5 py-1.5 px-2 outline-none transition-all duration-150
+        ${isFocused ? 'bg-[var(--bg-secondary)] border-l-2 shadow-sm' : 'border-l-2 border-transparent'}
+        ${!isAvailable
+                    ? 'opacity-40 grayscale-[30%]'
+                    : 'hover:bg-[color-mix(in_srgb,var(--item-color),transparent_90%)] cursor-pointer'
+                }`}
+            style={{
+                transition: 'background-color 0.15s, color 0.5s',
+                borderColor: isFocused ? hexColor : 'transparent',
+                backgroundColor: isFocused ? `color-mix(in srgb, ${hexColor}, transparent 85%)` : undefined, // Stronger tint on focus (15% opacity)
+                '--item-color': hexColor,
+            } as React.CSSProperties}
             onClick={(e) => {
                 e.stopPropagation();
                 onFocus?.();
                 if (isAvailable) {
                     const willBeSelected = !isSelected;
                     onToggle();
-                    // Temporarily disabled to save Umami event quota
-                    // const distroName = distros.find(d => d.id === selectedDistro)?.name || selectedDistro;
-                    // if (willBeSelected) {
-                    //     analytics.appSelected(app.name, app.category, distroName);
-                    // } else {
-                    //     analytics.appDeselected(app.name, app.category, distroName);
-                    // }
                 }
             }}
         >
-            <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors duration-150
-        ${isAur
-                    ? (isSelected ? 'bg-[#1793d1] border-[#1793d1]' : 'border-[#1793d1]/50')
-                    : (isSelected ? 'bg-[var(--text-secondary)] border-[var(--text-secondary)]' : 'border-[var(--border-secondary)]')
-                }
-        ${!isAvailable ? 'border-dashed' : ''}`}>
-                {isSelected && <Check className="w-2.5 h-2.5 text-[var(--bg-primary)]" strokeWidth={3} />}
+            <div
+                className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors duration-150 ${!isAvailable ? 'border-dashed' : ''}`}
+                style={{
+                    borderColor: isSelected || isAur ? checkboxColor : 'var(--border-secondary)',
+                    backgroundColor: isSelected ? checkboxColor : 'transparent',
+                }}
+            >
+                {isSelected && <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />}
             </div>
             <AppIcon url={app.iconUrl} name={app.name} />
             <div className="flex-1 flex items-baseline gap-1.5 min-w-0 overflow-hidden">
@@ -116,7 +144,8 @@ export const AppItem = memo(function AppItem({
                     onMouseLeave={(e) => { e.stopPropagation(); onTooltipLeave(); }}
                 >
                     <svg
-                        className="w-4 h-4 text-[var(--text-muted)] hover:text-[var(--accent)] transition-[color,transform] duration-300 hover:rotate-[360deg] hover:scale-110"
+                        className="w-4 h-4 text-[var(--text-muted)] transition-[color,transform] duration-300 hover:rotate-[360deg] hover:scale-110"
+                        style={{ color: isFocused ? hexColor : undefined }} // Use category color on hover/focus
                         viewBox="0 0 24 24"
                         fill="currentColor"
                         xmlns="http://www.w3.org/2000/svg"

@@ -20,9 +20,10 @@ interface CommandDrawerProps {
     setHasYayInstalled: (value: boolean) => void;
     selectedHelper: 'yay' | 'paru';
     setSelectedHelper: (helper: 'yay' | 'paru') => void;
+    distroColor: string;
 }
 
-// Slide-up drawer for command preview (mobile: bottom sheet, desktop: centered modal)
+// Bottom sheet for mobile, centered modal for desktop
 export function CommandDrawer({
     isOpen,
     isClosing,
@@ -38,6 +39,7 @@ export function CommandDrawer({
     setHasYayInstalled,
     selectedHelper,
     setSelectedHelper,
+    distroColor,
 }: CommandDrawerProps) {
     // Swipe-to-dismiss state
     const [dragOffset, setDragOffset] = useState(0);
@@ -87,16 +89,18 @@ export function CommandDrawer({
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="drawer-title"
-                className="fixed z-50 bg-[var(--bg-secondary)] border border-[var(--border-primary)] shadow-2xl
-                    bottom-0 left-0 right-0 rounded-t-2xl
-                    md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:rounded-2xl md:max-w-2xl md:w-[90vw]"
+                className="fixed z-50 bg-[var(--bg-secondary)] rounded-t-xl md:rounded-lg shadow-2xl
+                    bottom-0 left-0 right-0
+                    md:bottom-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:max-w-2xl md:w-[90vw]"
                 style={{
+                    boxShadow: '0 0 0 1px var(--border-primary), 0 20px 60px -10px rgba(0, 0, 0, 0.5)',
                     animation: isClosing
                         ? 'slideDown 0.3s cubic-bezier(0.32, 0, 0.67, 0) forwards'
                         : dragOffset > 0 ? 'none' : 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
                     maxHeight: '80vh',
                     transform: dragOffset > 0 ? `translateY(${dragOffset}px)` : undefined,
-                    transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+                    transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                    border: '1px solid var(--border-primary)',
                 }}
             >
                 {/* Drawer Handle - mobile only, draggable */}
@@ -112,32 +116,28 @@ export function CommandDrawer({
                     />
                 </div>
 
-                {/* Drawer Header */}
-                <div className="flex items-center justify-between px-4 sm:px-6 pb-3 md:pt-4 border-b border-[var(--border-primary)]">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-primary)] bg-[var(--bg-secondary)]">
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                            <span className="text-emerald-500 font-bold text-sm">$</span>
-                        </div>
-                        <div>
-                            <h3 id="drawer-title" className="text-sm font-semibold text-[var(--text-primary)]">Terminal Command</h3>
-                            <p className="text-xs text-[var(--text-muted)]">
-                                {selectedCount} app{selectedCount !== 1 ? 's' : ''}
-                                <span className="hidden md:inline"> • Press Esc to close</span>
-                            </p>
+                        <div className="flex items-center gap-2">
+                            <div className="w-1 h-5 rounded-full" style={{ backgroundColor: distroColor }}></div>
+                            <div>
+                                <h3 id="drawer-title" className="text-sm font-bold uppercase tracking-wider text-[var(--text-secondary)]">Terminal Preview</h3>
+                                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                                    {selectedCount} apps selected
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <button
                         onClick={onClose}
-                        className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[var(--bg-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                        className="p-2 -mr-2 rounded-md hover:bg-[var(--bg-hover)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
                         aria-label="Close drawer"
                     >
                         <X className="w-5 h-5" />
                     </button>
                 </div>
 
-                {/* Command Content */}
-                <div className="p-4 sm:p-6 overflow-y-auto" style={{ maxHeight: 'calc(80vh - 200px)' }}>
-                    {/* AUR Settings */}
+                <div className="p-4 overflow-y-auto bg-[var(--bg-primary)]/50" style={{ maxHeight: 'calc(80vh - 140px)' }}>
                     {showAur && (
                         <AurDrawerSettings
                             aurAppNames={aurAppNames}
@@ -145,44 +145,47 @@ export function CommandDrawer({
                             setHasYayInstalled={setHasYayInstalled}
                             selectedHelper={selectedHelper}
                             setSelectedHelper={setSelectedHelper}
+                            distroColor={distroColor}
                         />
                     )}
 
                     {/* Terminal window */}
-                    <div className="bg-[#1a1a1a] rounded-xl overflow-hidden border border-[var(--border-primary)]">
-                        <div className="flex items-center justify-between px-4 py-2 bg-[#252525] border-b border-[var(--border-primary)]">
-                            <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                                <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                                <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                                <span className="ml-2 text-xs text-[var(--text-muted)]">bash</span>
-                            </div>
+                    {/* Terminal window */}
+                    <div className="bg-[var(--bg-secondary)] rounded-lg border border-[var(--border-primary)] overflow-hidden shadow-sm">
+                        <div className="flex items-center justify-between px-4 py-2 bg-[var(--bg-tertiary)] border-b border-[var(--border-primary)]">
+                            <span className="text-xs font-mono text-[var(--text-muted)]">bash</span>
+
                             {/* Desktop action buttons */}
                             <div className="hidden md:flex items-center gap-2">
                                 <button
                                     onClick={onDownload}
-                                    className="h-7 px-3 flex items-center gap-1.5 rounded-md bg-[var(--bg-tertiary)]/50 text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-colors text-xs font-medium"
+                                    className="h-8 px-4 flex items-center gap-2 rounded-md hover:bg-[var(--bg-primary)] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-all text-xs font-medium"
                                 >
-                                    <Download className="w-3.5 h-3.5" />
-                                    Download
+                                    <Download className="w-4 h-4" />
+                                    <span>Script</span>
                                 </button>
                                 <button
                                     onClick={handleCopyAndClose}
-                                    className={`h-7 px-3 flex items-center gap-1.5 rounded-md text-xs font-medium transition-colors ${copied
-                                        ? 'bg-emerald-600 text-white'
-                                        : 'bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white'
+                                    className={`h-8 px-4 flex items-center gap-2 rounded-md text-xs font-medium transition-all ${copied
+                                        ? 'shadow-sm'
+                                        : 'hover:bg-[var(--bg-primary)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                                         }`}
+                                    style={{
+                                        backgroundColor: copied ? distroColor : 'transparent',
+                                        color: copied ? '#000' : undefined,
+                                    }}
                                 >
-                                    {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                                    {copied ? 'Copied!' : 'Copy'}
+                                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                    <span>{copied ? 'Copied' : 'Copy'}</span>
                                 </button>
                             </div>
                         </div>
-                        <div className="p-4 font-mono text-sm overflow-x-auto">
-                            <div className="flex gap-2">
-                                <span className="text-emerald-400 select-none shrink-0">$</span>
+
+                        <div className="p-4 font-mono text-sm overflow-x-auto bg-[var(--bg-secondary)]">
+                            <div className="flex gap-3">
+                                <span className="select-none shrink-0 font-bold" style={{ color: distroColor }}>$</span>
                                 <code
-                                    className="text-gray-300 break-all whitespace-pre-wrap"
+                                    className="text-[var(--text-primary)] break-all whitespace-pre-wrap select-text"
                                     style={{
                                         lineHeight: '1.6',
                                         fontFamily: 'var(--font-jetbrains-mono), monospace'
@@ -195,21 +198,24 @@ export function CommandDrawer({
                     </div>
                 </div>
 
-                {/* Mobile Actions - side by side for better UX */}
-                <div className="md:hidden flex items-stretch gap-3 px-4 py-4 border-t border-[var(--border-primary)]">
+                {/* Mobile Actions */}
+                <div className="md:hidden flex items-stretch gap-3 px-4 py-3 border-t border-[var(--border-primary)] bg-[var(--bg-secondary)]">
                     <button
                         onClick={onDownload}
-                        className="flex-1 h-12 flex items-center justify-center gap-2 rounded-xl bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] active:scale-[0.98] transition-all font-medium text-sm"
+                        className="flex-1 h-11 flex items-center justify-center gap-2 rounded-md bg-[var(--bg-tertiary)] border border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] active:scale-[0.98] transition-all font-medium text-sm"
                     >
                         <Download className="w-4 h-4" />
                         Download
                     </button>
                     <button
                         onClick={handleCopyAndClose}
-                        className={`flex-1 h-12 flex items-center justify-center gap-2 rounded-xl font-medium text-sm active:scale-[0.98] transition-all ${copied
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-[var(--text-primary)] text-[var(--bg-primary)] hover:opacity-90'
+                        className={`flex-1 h-11 flex items-center justify-center gap-2 rounded-md font-medium text-sm active:scale-[0.98] transition-all shadow-sm ${copied
+                            ? 'text-black'
+                            : 'text-[var(--text-primary)] bg-[var(--bg-tertiary)] border border-[var(--border-primary)]'
                             }`}
+                        style={{
+                            backgroundColor: copied ? distroColor : undefined,
+                        }}
                     >
                         {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                         {copied ? 'Copied!' : 'Copy'}
