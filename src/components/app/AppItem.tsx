@@ -58,12 +58,13 @@ export const AppItem = memo(function AppItem({
                 if (isAvailable) {
                     const willBeSelected = !isSelected;
                     onToggle();
-                    const distroName = distros.find(d => d.id === selectedDistro)?.name || selectedDistro;
-                    if (willBeSelected) {
-                        analytics.appSelected(app.name, app.category, distroName);
-                    } else {
-                        analytics.appDeselected(app.name, app.category, distroName);
-                    }
+                    // Temporarily disabled to save Umami event quota
+                    // const distroName = distros.find(d => d.id === selectedDistro)?.name || selectedDistro;
+                    // if (willBeSelected) {
+                    //     analytics.appSelected(app.name, app.category, distroName);
+                    // } else {
+                    //     analytics.appDeselected(app.name, app.category, distroName);
+                    // }
                 }
             }}
         >
