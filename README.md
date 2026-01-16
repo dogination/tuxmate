@@ -253,6 +253,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 - [ ] Companion CLI tool
 - [ ] Expand application catalog (200+)
 - [ ] Dotfiles integration
+- [ ] Declarative NixOS options support (programs.*) [Issue #36]
 
 
 <details>
